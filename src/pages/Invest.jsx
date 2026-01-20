@@ -27,7 +27,7 @@ function Invest() {
     entityName,
     subscriptionType
   } = state;
-
+  
   const [amount, setAmount] = useState("");
   
   // Calculate units (prevent NaN)
@@ -36,8 +36,8 @@ function Invest() {
     : 0;
 
   async function submitInvestment() {
-    if (Number(amount) < minimumInvestment) {
-      alert(`Minimum investment is ₹${minimumInvestment}`);
+    if (Number(amount) < minimumInvestment/pricePerUnit) {
+      alert(`Minimum quantity to invest is ${amount}`);
       return;
     }
 
@@ -51,7 +51,7 @@ function Invest() {
     try {
       await investOffer(payload);
       alert("Investment successful!");
-      navigate("/investor"); // Redirect back to investor dashboard
+      navigate("/investor"); 
     } catch (err) {
       console.error(err);
       alert("Investment failed");
@@ -83,23 +83,24 @@ function Invest() {
         <div className="stats-grid">
           <div className="stat-row">
             <span className="info-label">Price / Unit</span>
-            <span className="info-value">₹{pricePerUnit}</span>
+            <span className="info-value">${pricePerUnit}</span>
           </div>
           <div className="stat-row">
             <span className="info-label">Min Investment</span>
-            <span className="info-value">₹{minimumInvestment}</span>
+            <span className="info-value">${minimumInvestment}</span>
           </div>
         </div>
 
         
         <div className="input-group">
-          <label className="input-label">Investment Amount (₹)</label>
+          <label className="input-label">Investment Quantities </label>
           <div className="currency-input-wrapper">
-            <span className="currency-symbol">₹</span>
+            <span className="currency-symbol"></span>
             <input
               type="number"
               className="invest-input"
-              placeholder={`Min: ${minimumInvestment}`}
+              placeholder={`Min: ${minimumInvestment/pricePerUnit}`}
+              min={minimumInvestment/pricePerUnit}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
@@ -110,11 +111,11 @@ function Invest() {
         <div className="calc-box">
           <div className="calc-row">
             <span>Units to Receive:</span>
-            <strong>{units}</strong>
+            <strong>{amount}</strong>
           </div>
           <div className="calc-row total">
             <span>Total Value:</span>
-            <span>₹{(units * pricePerUnit).toLocaleString()}</span>
+            <span>${(amount * pricePerUnit).toLocaleString()}</span>
           </div>
         </div>
 
