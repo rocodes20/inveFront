@@ -1,0 +1,210 @@
+/* Page Background */
+.invest-page-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6; /* Light gray background */
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* The Main Card */
+.invest-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 600px; /* Compact width for focus */
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.invest-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.invest-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.invest-subtitle {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Info Box (Entity & Type) */
+.info-box {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.info-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-top: 4px;
+}
+
+/* Financial Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Input Section */
+.input-group {
+  margin-bottom: 24px;
+}
+
+.input-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.currency-input-wrapper {
+  position: relative;
+}
+
+.currency-symbol {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.invest-input {
+  width: 100%;
+  padding: 12px 12px 12px 30px; /* Space for symbol */
+  font-size: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.invest-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Calculation Result Box */
+.calc-box {
+  background-color: #ecfdf5; /* Light green bg */
+  border: 1px solid #d1fae5;
+  border-radius: 8px;
+  padding: 16px;
+  color: #065f46;
+  margin-bottom: 32px;
+}
+
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.calc-row.total {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #a7f3d0;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* Actions */
+.button-group {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-confirm {
+  flex: 2;
+  padding: 14px;
+  background-color: #16a34a; /* Green */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-confirm:hover {
+  background-color: #15803d;
+}
+
+.btn-back {
+  flex: 1;
+  padding: 14px;
+  background-color: white;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-back:hover {
+  background-color: #f9fafb;
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+  .invest-card {
+    padding: 24px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .button-group {
+    flex-direction: column-reverse;
+  }
+  
+  .btn-confirm, .btn-back {
+    width: 100%;
+  }
+}

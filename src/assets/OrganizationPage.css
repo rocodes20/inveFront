@@ -1,0 +1,63 @@
+/* Container fills the whole screen */
+.org-page-container {
+  min-height: 100vh;
+  background-color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The Header / Tab Bar */
+.org-nav-bar {
+  width: 100%;             /* Spans full width */
+  display: flex;
+  gap: 40px;               /* Space between tabs */
+  padding: 0 50px;         /* Side padding */
+  border-bottom: 2px solid #f3f4f6; /* Distinct separator line */
+  background-color: #fff;
+  position: sticky;        /* Optional: Keeps header at top when scrolling */
+  top: 0;
+  z-index: 50;
+}
+
+/* Tab Links */
+.org-tab-btn {
+  background: none;
+  border: none;
+  padding: 20px 0;         /* Taller header feel */
+  font-size: 16px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.org-tab-btn:hover {
+  color: #111827;
+}
+
+/* Active State */
+.org-tab-btn.active {
+  color: #2563eb;          /* Blue text for active */
+  font-weight: 600;
+}
+
+/* Active Underline */
+.org-tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;            /* Aligns with the border-bottom */
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #2563eb; /* Blue underline */
+}
+
+/* Content Area - Full Screen Width */
+.org-content-area {
+  flex: 1;                 /* Takes up remaining height */
+  width: 100%;             /* Full width */
+  padding: 40px 50px;      /* Standard page padding */
+  background-color: #f9fafb; /* Slight grey bg for content distinction (optional) */
+}

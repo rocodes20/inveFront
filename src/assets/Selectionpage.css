@@ -1,0 +1,43 @@
+/* Center the page content */
+.selection-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #ffffff;
+  font-family: sans-serif;
+}
+
+/* The Container for the buttons */
+.button-group {
+  display: flex;
+  gap: 30px; /* Space between buttons */
+  margin-top: 20px;
+}
+
+/* The Blue Card Button */
+.card-btn {
+  background-color: #3b82f6; /* Nice distinct Blue */
+  color: white;
+  width: 200px;
+  height: 140px;
+  
+  /* Text styling */
+  font-size: 1.2rem;
+  font-weight: 600;
+  
+  /* Card Look styling */
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+/* Hover effects */
+.card-btn:hover {
+  background-color: #2563eb; /* Darker blue on hover */
+  transform: translateY(-4px); /* Moves up slightly */
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+}

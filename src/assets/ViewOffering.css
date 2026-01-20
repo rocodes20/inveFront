@@ -1,0 +1,139 @@
+/* Container for the grid of cards */
+.offerings-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.offerings-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 24px;
+}
+
+/* The Grid Layout */
+.offerings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Default Desktop: Responsive 3+ cols */
+  gap: 24px;
+}
+
+/* Individual Card Styling */
+.offering-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.offering-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Content */
+.offering-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.card-meta {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.card-divider {
+  border: 0;
+  height: 1px;
+  background: #f3f4f6;
+  margin: 16px 0;
+}
+
+/* Data Rows */
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.card-label { color: #6b7280; font-weight: 500; }
+.card-value { color: #111827; font-weight: 600; }
+
+
+/* Button Styling */
+.apply-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.apply-btn:hover { background-color: #1d4ed8; }
+
+/* Loading States */
+.loading-text, .error-text, .empty-text {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  font-size: 16px;
+}
+.error-text { color: #ef4444; }
+
+
+/* =========================================
+   --- Media Queries (Mobile & Tablet) ---
+========================================= */
+
+/* Tablet View (approx < 1024px) */
+@media (max-width: 1024px) {
+  .offerings-container {
+    padding: 20px;
+  }
+  
+  .offerings-grid {
+    /* Force 2 columns on tablet instead of trying to fit 3 */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px;
+  }
+}
+
+/* Mobile View (approx < 640px) */
+@media (max-width: 640px) {
+  .offerings-container {
+    padding: 16px;
+  }
+
+  .offerings-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .offerings-grid {
+    /* Force 1 single column on mobile */
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .offering-card {
+    padding: 16px; /* Slightly tighter padding inside cards */
+  }
+
+  .offering-card h3 {
+    font-size: 16px;
+  }
+}

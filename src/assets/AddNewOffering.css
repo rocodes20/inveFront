@@ -1,0 +1,332 @@
+/* --- Global Page & Layout (Card Style) --- */
+.offering-page {
+    /* Allow space around the card */
+    width: auto;
+    height: auto;
+    margin: 24px; 
+    
+    /* Card Styling */
+    background: #ffffff;
+    border-radius: 16px; /* Rounded Corners */
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1); /* Soft Depth Shadow */
+    overflow: hidden; /* Ensures header/footer conform to rounded corners */
+    
+    font-family: system-ui, -apple-system, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure header top corners match card */
+.offering-header {
+    background: #ffffff;
+    padding: 20px 32px; /* Slightly more padding for card look */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* --- Form Grid System --- */
+.offering-grid {
+    display: grid;
+    gap: 24px;
+    padding: 24px;
+    align-items: flex-end; /* Keeps all baselines level */
+}
+
+.four-column { grid-template-columns: repeat(4, 1fr); }
+.five-column { grid-template-columns: repeat(5, 1fr); }
+
+/* --- Input & Field Styling --- */
+.field {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.field label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #374151;
+}
+
+.field input,
+.custom-select {
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 8px 4px;
+    font-size: 14px;
+    height: 38px;
+    box-sizing: border-box;
+    background: transparent;
+    width: 100%;
+}
+
+.field input:focus,
+.custom-select:focus {
+    outline: none;
+    border-bottom-color: #0ea5e9;
+}
+
+.placeholder-text, .field input::placeholder {
+    color: #9ca3af;
+}
+
+/* --- Custom Select Dropdown UI --- */
+.custom-select {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arrow {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0 0 8px 8px;
+    max-height: 250px;
+    overflow: visible; /* Allows tooltip to pop out */
+    z-index: 50;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    position: relative;
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #374151;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background: #f3f4f6;
+}
+
+/* --- Info Icon Styling --- */
+.info-icon {
+    border: 1px solid #06b6d4;
+    color: #06b6d4;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #fff;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+.info-icon:hover {
+    background: #06b6d4;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* --- Compact Option Tooltip --- */
+.option-tooltip {
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 180px;
+    background: #1f2937;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    line-height: 1.4;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    opacity: 0;
+    animation: tooltipFadeIn 0.2s ease forwards;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.option-tooltip::after {
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #1f2937 transparent transparent;
+}
+
+/* Fade-in Animation */
+@keyframes tooltipFadeIn {
+    from { opacity: 0; transform: translateY(-50%) translateX(-5px); }
+    to { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+/* Smart Grid Edge Handling (Flips tooltip left if on right side) */
+.offering-grid .field:nth-child(4n) .option-tooltip,
+.offering-grid .field:nth-child(5n) .option-tooltip,
+.field:last-child .option-tooltip {
+    left: auto;
+    right: calc(100% + 12px);
+}
+
+.offering-grid .field:nth-child(4n) .option-tooltip::after,
+.offering-grid .field:nth-child(5n) .option-tooltip::after,
+.field:last-child .option-tooltip::after {
+    right: auto;
+    left: 100%;
+    border-color: transparent transparent transparent #1f2937;
+}
+
+/* --- Section & Button Styling --- */
+.investor-section {
+    margin: 0 24px 24px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+}
+
+.investor-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 18px;
+    font-weight: 600;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.offering-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    margin-top: auto;
+}
+
+.primary-btn {
+    background: #06b6d4;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    margin: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.outline-btn {
+    border: 1px solid #06b6d4;
+    color: #06b6d4;
+    background: transparent;
+    padding: 8px 14px;
+    margin-right: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.ghost-btn {
+    border: 1px solid #d1d5db;
+    background: transparent;
+    padding: 8px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.total-box strong {
+    font-size: 18px;
+    margin-left: 8px;
+}
+
+/* =========================================
+   --- Media Queries (Tablet & Mobile) ---
+========================================= */
+
+/* Tablet View (approx < 1024px) */
+@media (max-width: 1024px) {
+    .offering-page {
+        margin: 16px; /* Reduce margin on smaller screens */
+    }
+
+    /* Collapse multi-column grids into 2 columns */
+    .four-column, 
+    .five-column { 
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+/* Mobile View (approx < 768px) */
+@media (max-width: 768px) {
+    .offering-page {
+        margin: 10px; /* Minimal margin on mobile */
+        border-radius: 12px;
+    }
+   
+    .offering-grid {
+        padding: 16px; /* Reduce internal padding */
+        gap: 16px;
+    }
+
+    /* Collapse all grids to single column */
+    .four-column, 
+    .five-column { 
+        grid-template-columns: 1fr; 
+    }
+
+    /* Stack the footer elements vertically */
+    .offering-footer {
+        flex-direction: column;
+        gap: 24px;
+        padding: 16px;
+    }
+
+    .footer-left, 
+    .footer-right {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch; /* Make buttons full width */
+        gap: 12px;
+    }
+    
+    .outline-btn { margin-right: 0; }
+    .total-box { margin-bottom: 12px; }
+    .primary-btn { margin: 10px 0 0 0; }
+
+    /* Adjust Tooltips for Mobile (Force them below instead of side) */
+    .option-tooltip, 
+    .offering-grid .field:nth-child(4n) .option-tooltip, 
+    .field:last-child .option-tooltip {
+        left: 50%;
+        right: auto;
+        top: calc(100% + 10px); /* Position below */
+        transform: translateX(-50%); /* Center horizontally */
+        width: 220px;
+        z-index: 100;
+    }
+
+    /* Adjust Tooltip Arrow for Mobile */
+    .option-tooltip::after,
+    .offering-grid .field:nth-child(4n) .option-tooltip::after,
+    .field:last-child .option-tooltip::after {
+        right: auto;
+        left: 50%;
+        top: auto;
+        bottom: 100%; /* Position on top of tooltip */
+        transform: translateX(-50%);
+        border-color: transparent transparent #1f2937 transparent; /* Arrow points up */
+    }
+}
