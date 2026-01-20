@@ -2,35 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { fetchContacts, bulkCreateContacts } from '../services/api'; 
 import '../assets/invitation.css'; 
 
-
 const InvitationPage = () => {
     
     const [contacts, setContacts] = useState([]);
     const [loading, setLoading] = useState(true);
     
-    
     const [showAddForm, setShowAddForm] = useState(false);
-
-    
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
-
     const [activeTab, setActiveTab] = useState('manual');
     
-    
+    // 1. UPDATED STATE: Added defaults for verified and contactType
     const [formData, setFormData] = useState({
         firstName: '', lastName: '', nickName: '', email: '',
         phoneNumber: '', dob: '', address: '', investmentCapacity: '',
         hearAboutUs: '', 
         accredited: false,
         emailSubNewsletter: false,
-        emailSubInvestments: false 
+        emailSubInvestments: false,
+        verified: false,            // Default: Not Verified
+        contactType: 'Individual'   // Default: Individual
     });
 
     const [csvFile, setCsvFile] = useState(null); 
     const [errors, setErrors] = useState({});
 
-    
     useEffect(() => {
         loadContactData();
     }, []);
@@ -39,9 +35,12 @@ const InvitationPage = () => {
         setLoading(true);
         try {
             const data = await fetchContacts();
+            // Handle different API response structures safely
             if (data && data.success && Array.isArray(data.result)) {
                 setContacts(data.result);
                 setCurrentPage(1); 
+            } else if (Array.isArray(data)) {
+                setContacts(data);
             } else {
                 setContacts([]); 
             }
@@ -53,7 +52,6 @@ const InvitationPage = () => {
         }
     };
 
-    
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentContacts = contacts.slice(indexOfFirstItem, indexOfLastItem);
@@ -67,7 +65,6 @@ const InvitationPage = () => {
         if (currentPage > 1) setCurrentPage(prev => prev - 1);
     };
 
-    
     const validateForm = () => {
         let newErrors = {};
         let isValid = true;
@@ -85,7 +82,6 @@ const InvitationPage = () => {
         return isValid;
     };
 
-    
     const handleInputChange = (e) => {
         const { id, value, type, checked } = e.target;
         setFormData(prev => ({
@@ -99,6 +95,7 @@ const InvitationPage = () => {
         e.preventDefault();
         if (!validateForm()) return; 
 
+        // 2. UPDATED PAYLOAD: Map the new fields for the backend
         const dataItem = { 
             firstName: formData.firstName,
             lastName: formData.lastName,
@@ -111,7 +108,11 @@ const InvitationPage = () => {
             hearAboutUs: formData.hearAboutUs,
             accredited: formData.accredited ? 1 : 0,
             emailSubNewsletter: formData.emailSubNewsletter ? 1 : 0,
-            emailSubInvestments: formData.emailSubInvestments ? 1 : 0
+            emailSubInvestments: formData.emailSubInvestments ? 1 : 0,
+            
+            // New Fields Mapped Here
+            verified: formData.verified ? 1 : 0,
+            contactType: formData.contactType
         };
 
         await submitPayload([dataItem]);
@@ -167,8 +168,8 @@ const InvitationPage = () => {
                 let header = headers[j];
                 let value = currentline[j] ? currentline[j].trim().replace(/[\r\n]+/g, '') : "";
                 if (header === "dob") value = formatDateForMySQL(value);
-                if (["accredited", "emailSubNewsletter", "emailSubInvestments"].includes(header)) {
-                    value = (value === "1" || value.toLowerCase() === "true") ? 1 : 0;
+                if (["accredited", "emailSubNewsletter", "emailSubInvestments", "verified"].includes(header)) {
+                    value = (value === "1" || value.toLowerCase() === "true" || value.toLowerCase() === "yes") ? 1 : 0;
                 }
                 obj[header] = value;
             }
@@ -179,18 +180,18 @@ const InvitationPage = () => {
 
     const submitPayload = async (payload) => {
         const result = await bulkCreateContacts(payload);
-        if (result && result.success) {
+        if (result && (result.success || result.message?.includes("Processed"))) {
             alert("Contacts Added Successfully!");
-            // Reset form
+            // Reset form (including new defaults)
             setFormData({ 
                 firstName: '', lastName: '', nickName: '', email: '', 
                 phoneNumber: '', dob: '', address: '', investmentCapacity: '', 
-                hearAboutUs: '', accredited: false, emailSubNewsletter: false, emailSubInvestments: false
+                hearAboutUs: '', accredited: false, emailSubNewsletter: false, 
+                emailSubInvestments: false, verified: false, contactType: 'Individual'
             });
             setCsvFile(null);
             setErrors({});
             loadContactData(); 
-            
             setShowAddForm(false);
         } else {
             alert("Error: " + (result.message || "Unknown error"));
@@ -201,11 +202,11 @@ const InvitationPage = () => {
         const headers = [
             "firstName", "lastName", "email", "phoneNumber", "nickName", "dob", 
             "address", "investmentCapacity", "hearAboutUs", "accredited", 
-            "emailSubNewsletter", "emailSubInvestments"
+            "emailSubNewsletter", "emailSubInvestments", "contactType", "verified"
         ];
         const sampleRow = [
             "John", "Doe", "john@example.com", "1234567890", "Johnny", "1/1/1990", 
-            "New York", "50000", "LinkedIn", "1", "1", "0"
+            "New York", "50000", "LinkedIn", "1", "1", "0", "Individual", "1"
         ];
         const csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + sampleRow.join(",");
         const encodedUri = encodeURI(csvContent);
@@ -231,16 +232,14 @@ const InvitationPage = () => {
                 </div>
 
                 <div className="div-table">
-                    {/* Table Header Row */}
                     <div className="div-table-header">
                         <div className="div-table-cell">NAME</div>
                         <div className="div-table-cell">EMAIL</div>
                         <div className="div-table-cell">PHONE</div>
                         <div className="div-table-cell">RESIDENCY</div>
-                        <div className="div-table-cell" style={{textAlign: 'right'}}>STATUS</div>
+                        <div className="div-table-cell">VERIFIED</div> 
                     </div>
 
-                    {/* Table Body */}
                     {loading ? (
                         <div className="div-table-empty">Loading data...</div>
                     ) : contacts.length === 0 ? (
@@ -254,10 +253,12 @@ const InvitationPage = () => {
                                 <div className="div-table-cell">{contact.email}</div>
                                 <div className="div-table-cell">{contact.phoneNumber || '-'}</div>
                                 <div className="div-table-cell">{contact.address || '-'}</div>
-                                <div className="div-table-cell" style={{textAlign: 'right'}}>
-                                    <span className={`status-badge ${contact.isInvested === 'YES' ? 'status-yes' : 'status-no'}`}>
-                                        {contact.isInvested}
-                                    </span>
+                                <div className="div-table-cell">
+                                    {contact.verified ? (
+                                        <span className="status-badge status-yes">Yes</span>
+                                    ) : (
+                                        <span className="status-badge status-no">No</span>
+                                    )}
                                 </div>
                             </div>
                         ))
@@ -271,29 +272,15 @@ const InvitationPage = () => {
                             Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, contacts.length)} of {contacts.length} entries
                         </span>
                         <div className="pagination-controls">
-                            <button 
-                                className="page-btn" 
-                                onClick={paginatePrev} 
-                                disabled={currentPage === 1}
-                            >
-                                &lt; Prev
-                            </button>
-                            <span style={{fontSize: '0.85rem', color: '#8898aa', display: 'flex', alignItems: 'center'}}>
-                                Page {currentPage}
-                            </span>
-                            <button 
-                                className="page-btn" 
-                                onClick={paginateNext}
-                                disabled={currentPage === totalPages}
-                            >
-                                Next &gt;
-                            </button>
+                            <button className="page-btn" onClick={paginatePrev} disabled={currentPage === 1}>&lt; Prev</button>
+                            <span style={{fontSize: '0.85rem', color: '#8898aa'}}>Page {currentPage}</span>
+                            <button className="page-btn" onClick={paginateNext} disabled={currentPage === totalPages}>Next &gt;</button>
                         </div>
                     </div>
                 )}
             </div>
 
-            {/* Right Column: Add Contact Form (Conditional) */}
+            {/* Right Column: Add Contact Form */}
             {showAddForm && (
                 <div className="card form-section">
                     <div className="card-header">
@@ -302,26 +289,15 @@ const InvitationPage = () => {
                     </div>
                     
                     <div className="form-body">
-                        {/* Tabs */}
                         <div className="tabs">
-                            <button 
-                                className={`tab-btn ${activeTab === 'manual' ? 'active' : ''}`} 
-                                onClick={() => setActiveTab('manual')}
-                            >
-                                Manual Entry
-                            </button>
-                            <button 
-                                className={`tab-btn ${activeTab === 'bulk' ? 'active' : ''}`} 
-                                onClick={() => setActiveTab('bulk')}
-                            >
-                                Bulk CSV Upload
-                            </button>
+                            <button className={`tab-btn ${activeTab === 'manual' ? 'active' : ''}`} onClick={() => setActiveTab('manual')}>Manual Entry</button>
+                            <button className={`tab-btn ${activeTab === 'bulk' ? 'active' : ''}`} onClick={() => setActiveTab('bulk')}>Bulk CSV Upload</button>
                         </div>
 
-                        {/* Manual Form Content */}
                         {activeTab === 'manual' && (
                             <form onSubmit={handleManualSubmit} noValidate>
                                 <div className="form-grid">
+                                    {/* Standard Fields */}
                                     <div className="form-group">
                                         <label className="form-label">First Name *</label>
                                         <input type="text" id="firstName" className={`form-input ${errors.firstName ? 'error' : ''}`} value={formData.firstName} onChange={handleInputChange} />
@@ -339,9 +315,41 @@ const InvitationPage = () => {
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label">Phone</label>
-                                        <input type="tel" id="phoneNumber" className={`form-input ${errors.phoneNumber ? 'error' : ''}`} value={formData.phoneNumber} onChange={handleInputChange} />
-                                        {errors.phoneNumber && <div className="error-text">{errors.phoneNumber}</div>}
+                                        <input type="tel" id="phoneNumber" className="form-input" value={formData.phoneNumber} onChange={handleInputChange} />
                                     </div>
+
+                                    {/* 3. NEW INPUTS START HERE */}
+                                    
+                                    {/* Contact Type Dropdown */}
+                                    <div className="form-group">
+                                        <label className="form-label">Contact Type</label>
+                                        <select 
+                                            id="contactType" 
+                                            className="form-input" 
+                                            value={formData.contactType} 
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="Individual">Individual</option>
+                                            <option value="Entity">Entity</option>
+                                        </select>
+                                    </div>
+
+                                    {/* Verified Checkbox */}
+                                    <div className="form-group" style={{justifyContent: 'flex-end'}}>
+                                        <div className="checkbox-group">
+                                            <input 
+                                                type="checkbox" 
+                                                id="verified" 
+                                                checked={formData.verified} 
+                                                onChange={handleInputChange} 
+                                            />
+                                            <label className="form-label" style={{margin:0, cursor:'pointer'}} htmlFor="verified">
+                                                Verified Contact?
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {/* NEW INPUTS END */}
+
                                     <div className="form-group">
                                         <label className="form-label">Nickname</label>
                                         <input type="text" id="nickName" className="form-input" value={formData.nickName} onChange={handleInputChange} />
@@ -356,8 +364,7 @@ const InvitationPage = () => {
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label">Capacity</label>
-                                        <input type="number" id="investmentCapacity" className={`form-input ${errors.investmentCapacity ? 'error' : ''}`} value={formData.investmentCapacity} onChange={handleInputChange} />
-                                        {errors.investmentCapacity && <div className="error-text">{errors.investmentCapacity}</div>}
+                                        <input type="number" id="investmentCapacity" className="form-input" value={formData.investmentCapacity} onChange={handleInputChange} />
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label">How did you hear about us?</label>
@@ -370,11 +377,9 @@ const InvitationPage = () => {
                                         </div>
                                     </div>
                                 </div>
-                                
 
                                 <div className="section-divider"></div>
                                 <h6 className="form-label" style={{color: '#8898aa'}}>Email Subscriptions</h6>
-                                
                                 <div className="subscription-grid">
                                     <div className="checkbox-group">
                                         <input type="checkbox" id="emailSubNewsletter" checked={formData.emailSubNewsletter} onChange={handleInputChange} />
@@ -393,33 +398,12 @@ const InvitationPage = () => {
                             </form>
                         )}
 
-                        {/* Bulk Upload Content */}
                         {activeTab === 'bulk' && (
                             <div className="bulk-upload-area">
                                 <h6 style={{fontSize:'1rem', margin:'0 0 10px 0'}}>Upload CSV File</h6>
-                                <p className="text-muted">Ensure headers match: firstName, lastName, email...</p>
-                                
-                                <button type="button" onClick={downloadSampleCSV} className="btn btn-secondary" style={{marginBottom: '20px'}}>
-                                    Download Sample CSV
-                                </button>
-
-                                <input 
-                                    type="file" 
-                                    className="form-input" 
-                                    style={{marginBottom: '20px'}}
-                                    accept=".csv" 
-                                    onChange={handleFileChange} 
-                                />
-                                
-                                <button 
-                                    type="button" 
-                                    className="btn btn-primary"
-                                    onClick={handleBulkSubmit}
-                                    disabled={!csvFile} 
-                                    style={{width: '100%'}}
-                                >
-                                    Upload Contacts
-                                </button>
+                                <button type="button" onClick={downloadSampleCSV} className="btn btn-secondary" style={{marginBottom: '20px'}}>Download Sample CSV</button>
+                                <input type="file" className="form-input" style={{marginBottom: '20px'}} accept=".csv" onChange={handleFileChange} />
+                                <button type="button" className="btn btn-primary" onClick={handleBulkSubmit} disabled={!csvFile} style={{width: '100%'}}>Upload Contacts</button>
                             </div>
                         )}
                     </div>

@@ -24,6 +24,7 @@ const OrganizationPage = () => {
         >
           Add Offering
         </button>
+        
       </div>
 
       {/* Page Content */}

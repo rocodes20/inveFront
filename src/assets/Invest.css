@@ -156,21 +156,28 @@
   gap: 12px;
 }
 
+/* Invest.css */
+
 .btn-confirm {
-  flex: 2;
-  padding: 14px;
-  background-color: #16a34a; /* Green */
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+    /* GRADIENT UPDATE */
+    background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+    color: white;
+    border: none;
+    
+    flex: 2;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-confirm:hover {
-  background-color: #15803d;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+    filter: brightness(1.1);
 }
 
 .btn-back {

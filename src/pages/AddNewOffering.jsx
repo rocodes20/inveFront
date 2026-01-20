@@ -24,7 +24,7 @@ function AddNewOffering() {
         status: "",
         visibility: ""
     });
-    const minValue = 1;
+
     function handleChange(e) {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -122,7 +122,6 @@ function AddNewOffering() {
                             <input
                                 type="number"
                                 name="offeringSize"
-                                min={minValue}
                                 placeholder="Enter Offering Size"
                                 value={formData.offeringSize}
                                 onChange={handleChange}
@@ -134,7 +133,6 @@ function AddNewOffering() {
                             <input
                                 type="number"
                                 name="minimumInvestment"
-                                min={minValue}
                                 placeholder="Enter Minimum Investment"
                                 value={formData.minimumInvestment}
                                 onChange={handleChange}
@@ -146,7 +144,6 @@ function AddNewOffering() {
                             <input
                                 type="number"
                                 name="pricePerUnit"
-                                min={minValue}
                                 placeholder="Enter Price Per Unit"
                                 value={formData.pricePerUnit}
                                 onChange={handleChange}
