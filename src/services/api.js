@@ -57,6 +57,26 @@ export async function fetchRoles() {
   });
 }
 
+export async function fetchProjects() {
+  return await apiRequest({
+    action: "get_projects"
+  });
+}
+
+export async function createProject(formData) {
+  return await apiRequest({
+    action: "create_project",
+    payload: formData
+  });
+}
+
+export async function fetchInvestors(offeringId) {
+  return await apiRequest({
+    action: "get_offering_investors",
+    offering_id: offeringId 
+  });
+}
+
 export async function fetchOfferings() {
   const response = await fetch("http://127.0.0.1:5000/investor", {
     method: "POST",

@@ -1,0 +1,140 @@
+/* src/assets/viewOfferings.css */
+
+.full-width-card {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+.filter-select {
+    padding: 6px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    outline: none;
+    cursor: pointer;
+    background-color: #fff;
+    min-width: 150px;
+}
+
+/* --- DIV TABLE STYLES --- */
+
+.div-table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-x: auto; 
+}
+
+/* UPDATED GRID COLUMNS */
+.div-table-header,
+.div-table-row {
+    display: grid;
+    grid-template-columns: 
+        1.2fr  /* Project */
+        1.5fr  /* Offering Name */
+        0.8fr  /* Type */
+        1.2fr  /* Entity */
+        /* Removed Raise */
+        1fr    /* Min Inv */
+        100px  /* Status */
+        140px; /* NEW: Action Button */
+    gap: 15px;
+    padding: 14px 20px;
+    align-items: center;
+    border-bottom: 1px solid #f3f4f6;
+    min-width: 900px;
+}
+
+.div-table-header {
+    background-color: #f9fafb;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #8898aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.div-table-row {
+    transition: background-color 0.2s ease;
+    font-size: 0.9rem;
+    color: #525f7f;
+}
+
+.div-table-row:hover {
+    background-color: #f8f9fe;
+}
+
+/* Cell Helpers */
+.div-table-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.font-bold {
+    font-weight: 600;
+    color: #111827;
+}
+
+.div-table-empty {
+    padding: 40px;
+    text-align: center;
+    color: #8898aa;
+    font-style: italic;
+}
+
+/* Badges */
+.badge-type {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+    text-align: center;
+    min-width: 80px;
+}
+
+.status-badge.open { background-color: #d1fae5; color: #065f46; }
+.status-badge.closed { background-color: #fee2e2; color: #991b1b; }
+.status-badge.draft { background-color: #f3f4f6; color: #374151; }
+.status-badge.pending { background-color: #fff7ed; color: #9a3412; }
+
+/* NEW BUTTON STYLE */
+.view-investors-btn {
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    color: #374151;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.view-investors-btn:hover {
+    background-color: #f3f4f6;
+    border-color: #9ca3af;
+    color: #111827;
+}

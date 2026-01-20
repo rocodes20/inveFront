@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { createOffering } from "../services/api";
 import "../assets/AddNewOffering.css";
 import SelectWithInfo from "../common/SelectWithInfo";
@@ -12,7 +13,7 @@ function isAnyFieldEmpty(data) {
         (value) => value === "" || value === null || value === undefined
     );
 }
-function AddNewOffering() {
+function AddNewOffering({ initialProjectName }) { 
     const [formData, setFormData] = useState({
         offeringName: "",
         subscriptionType: "",
@@ -24,6 +25,16 @@ function AddNewOffering() {
         status: "",
         visibility: ""
     });
+
+    // 3. Add this Effect to pre-fill the name
+    useEffect(() => {
+        if (initialProjectName) {
+            setFormData(prev => ({
+                ...prev,
+                offeringName: initialProjectName
+            }));
+        }
+    }, [initialProjectName]);
 
     function handleChange(e) {
         const { name, value } = e.target;

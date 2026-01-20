@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ViewOffering from '../pages/viewOffering'; 
+import ViewOffering from '../pages/ViewOfferings'; 
 import '../assets/OrganizationPage.css';
 
 const InvestorPage = () => {
@@ -20,7 +20,7 @@ const InvestorPage = () => {
 
       
       <main className="org-content-area">
-        {activeTab === 'viewOffering' && (
+        {activeTab === 'ViewOffering' && (
           <ViewOffering />
         )}
       </main>

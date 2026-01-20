@@ -7,30 +7,29 @@ function Invest() {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  
   if (!state) {
     return (
       <div className="invest-page-container">
-        
-          <p>Invalid access. Please select an offer first.</p>
-          <button className="btn-back" onClick={() => navigate('/')} style={{marginTop: '20px'}}>Go Home</button>
-        
+        <p>Invalid access. Please select an offer first.</p>
+        <button className="btn-back" onClick={() => navigate('/')} style={{marginTop: '20px'}}>Go Home</button>
       </div>
     );
   }
 
+  // FIX: Destructure using snake_case (DB column names)
+  // We alias them to camelCase variables for cleaner usage below
   const {
-    offeringId,
-    offerName,
-    pricePerUnit,
-    minimumInvestment,
-    entityName,
-    subscriptionType
+    offering_id: offeringId, 
+    offer_name: offerName,
+    price_per_unit: pricePerUnit,
+    minimum_investment: minimumInvestment,
+    entity_name: entityName,
+    subscription_type: subscriptionType,
+    project_id: projectId // Get project_id from the offer data
   } = state;
 
   const [amount, setAmount] = useState("");
   
-  // Calculate units (prevent NaN)
   const units = amount && amount >= 0 
     ? Math.floor(amount / pricePerUnit) 
     : 0;
@@ -42,19 +41,24 @@ function Invest() {
     }
 
     const payload = {
-      contact_id: 3,         // TEMP
-      project_id: 1,         // TEMP
+      contact_id: 3,           // Still Hardcoded (User ID)
+      project_id: projectId || 1, // Use valid project ID from offer, fallback to 1
       offering_id: offeringId,
       amount: Number(amount)
     };
 
     try {
-      await investOffer(payload);
-      alert("Investment successful!");
-      navigate("/investor"); // Redirect back to investor dashboard
+      const result = await investOffer(payload);
+      
+      if(result && result.success) {
+        alert("Investment successful!");
+        navigate("/investor"); 
+      } else {
+        alert("Investment failed: " + (result.message || "Unknown Error"));
+      }
     } catch (err) {
       console.error(err);
-      alert("Investment failed");
+      alert("Investment failed. Check console.");
     }
   }
 
@@ -62,23 +66,19 @@ function Invest() {
     <div className="invest-page-container">
       <div className="invest-card">
         
-        
         <div className="invest-header">
           <h2>Invest in {offerName}</h2>
           <span className="invest-subtitle">Confirm your allocation details below</span>
         </div>
 
-        
-          <div className="info-item">
-            <span className="info-label">Entity</span>
-            <span className="info-value">{entityName || "—"}</span>
-          </div>
-          <div className="info-item" style={{textAlign: 'right'}}>
-            <span className="info-label">Type</span>
-            <span className="info-value">{subscriptionType || "—"}</span>
-          </div>
-        
-
+        <div className="info-item">
+          <span className="info-label">Entity</span>
+          <span className="info-value">{entityName || "—"}</span>
+        </div>
+        <div className="info-item" style={{textAlign: 'right'}}>
+          <span className="info-label">Type</span>
+          <span className="info-value">{subscriptionType || "—"}</span>
+        </div>
         
         <div className="stats-grid">
           <div className="stat-row">
@@ -91,7 +91,6 @@ function Invest() {
           </div>
         </div>
 
-        
         <div className="input-group">
           <label className="input-label">Investment Amount (₹)</label>
           <div className="currency-input-wrapper">
@@ -106,7 +105,6 @@ function Invest() {
           </div>
         </div>
 
-        
         <div className="calc-box">
           <div className="calc-row">
             <span>Units to Receive:</span>
@@ -118,7 +116,6 @@ function Invest() {
           </div>
         </div>
 
-        
         <div className="button-group">
           <button className="btn-back" onClick={() => navigate(-1)}>
             Cancel

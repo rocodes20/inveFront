@@ -1,0 +1,181 @@
+/* src/assets/projects.css */
+
+.page-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    min-height: 80vh;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.project-list-section {
+    flex: 1;
+    min-width: 0;
+}
+
+.form-section {
+    width: 350px;
+    flex-shrink: 0;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.card-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #f3f4f6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #32325d;
+    font-weight: 700;
+}
+
+.project-grid-list {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* COMPACT CARD STYLING */
+.project-item-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 14px 18px;
+    transition: all 0.2s ease;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.project-item-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    border-color: #60a5fa;
+}
+
+.proj-name {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.proj-desc {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #6b7280;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 30px;
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+/* FORM STYLING */
+.project-form {
+    padding: 15px 20px;
+}
+
+.form-group {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-input {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+/* BUTTONS */
+.btn-primary {
+    background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-secondary {
+    background: white;
+    border: 1px solid #d1d5db;
+    color: #374151;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: #9ca3af;
+    cursor: pointer;
+}
+
+/* ... existing styles ... */
+
+/* New Footer Area for Button */
+.card-action-footer {
+    margin-top: auto; /* Pushes to bottom if flex container */
+    padding-top: 12px;
+    border-top: 1px solid #f3f4f6;
+    display: flex;
+    justify-content: flex-end; /* Aligns button to right (or use center) */
+}
+
+.add-offering-btn {
+    background-color: transparent;
+    border: 1px solid #60a5fa;
+    color: #2563eb;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 20%; /* Makes it full width for easy clicking */
+    text-align: center;
+}
+
+.add-offering-btn:hover {
+    background-color: #eff6ff;
+    border-color: #2563eb;
+}

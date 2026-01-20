@@ -4,6 +4,7 @@ import SelectionPage from './pages/SelectionPage';
 import OrganizationPage from './pages/OrganizationPage'; 
 import InvestorPage from './pages/InvestorPage';
 import Invest from './pages/Invest';
+import OfferingInvestors from './pages/OfferingInvestors'; // <--- Import New Page
 
 const App = () => {
   return (
@@ -12,6 +13,8 @@ const App = () => {
       <Route path="/investor" element={<InvestorPage />} />
       <Route path="/organization" element={<OrganizationPage />} />
       <Route path="/invest" element={<Invest />} />
+
+      <Route path="/investors/:id" element={<OfferingInvestors />} />
     </Routes>
   );
 };
