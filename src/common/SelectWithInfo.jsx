@@ -1,3 +1,4 @@
+// for the tags in the dropdown
 import React, { useState, useEffect, useRef } from "react";
 
 const SelectWithInfo = ({

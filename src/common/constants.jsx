@@ -1,3 +1,4 @@
+// for the tags in the dropdown
 export const SUBSCRIPTION_OPTIONS = [
     {
         value: "Investment",

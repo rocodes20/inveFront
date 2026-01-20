@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../assets/SelectionPage.css'; // Import the CSS file
+import '../assets/SelectionPage.css'; 
 
 const SelectionPage = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const SelectionPage = () => {
         
         <button 
           className="card-btn"
-          onClick={() => navigate('/investor')} // <--- Update this line
+          onClick={() => navigate('/investor')} 
         >
           Investor
         </button>

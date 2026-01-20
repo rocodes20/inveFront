@@ -4,20 +4,20 @@ import '../assets/invitation.css';
 
 
 const InvitationPage = () => {
-    // 1. Data State
+    
     const [contacts, setContacts] = useState([]);
     const [loading, setLoading] = useState(true);
     
-    // --- Layout State ---
+    
     const [showAddForm, setShowAddForm] = useState(false);
 
-    // --- Pagination State ---
+    
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
     const [activeTab, setActiveTab] = useState('manual');
     
-    // 2. Form State
+    
     const [formData, setFormData] = useState({
         firstName: '', lastName: '', nickName: '', email: '',
         phoneNumber: '', dob: '', address: '', investmentCapacity: '',
@@ -30,7 +30,7 @@ const InvitationPage = () => {
     const [csvFile, setCsvFile] = useState(null); 
     const [errors, setErrors] = useState({});
 
-    // 3. Load Data
+    
     useEffect(() => {
         loadContactData();
     }, []);
@@ -53,7 +53,7 @@ const InvitationPage = () => {
         }
     };
 
-    // --- Pagination Logic ---
+    
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentContacts = contacts.slice(indexOfFirstItem, indexOfLastItem);
@@ -67,7 +67,7 @@ const InvitationPage = () => {
         if (currentPage > 1) setCurrentPage(prev => prev - 1);
     };
 
-    // 4. Validation
+    
     const validateForm = () => {
         let newErrors = {};
         let isValid = true;
@@ -85,7 +85,7 @@ const InvitationPage = () => {
         return isValid;
     };
 
-    // 5. Handlers
+    
     const handleInputChange = (e) => {
         const { id, value, type, checked } = e.target;
         setFormData(prev => ({
@@ -190,7 +190,7 @@ const InvitationPage = () => {
             setCsvFile(null);
             setErrors({});
             loadContactData(); 
-            // Close the form panel after success
+            
             setShowAddForm(false);
         } else {
             alert("Error: " + (result.message || "Unknown error"));

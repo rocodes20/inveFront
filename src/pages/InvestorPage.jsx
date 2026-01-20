@@ -8,7 +8,7 @@ const InvestorPage = () => {
   return (
     <div className="org-page-container">
       
-      {/* Header / Tab Bar */}
+      
       <header className="org-nav-bar">
         <button
           className={`org-tab-btn ${activeTab === 'viewOffering' ? 'active' : ''}`}
@@ -18,7 +18,7 @@ const InvestorPage = () => {
         </button>
       </header>
 
-      {/* Main Content Area */}
+      
       <main className="org-content-area">
         {activeTab === 'viewOffering' && (
           <ViewOffering />

@@ -62,14 +62,13 @@ function Invest() {
     <div className="invest-page-container">
       <div className="invest-card">
         
-        {/* Header */}
+        
         <div className="invest-header">
           <h2>Invest in {offerName}</h2>
           <span className="invest-subtitle">Confirm your allocation details below</span>
         </div>
 
-        {/* Info Box */}
-        {/* <div className="info-box"> */}
+        
           <div className="info-item">
             <span className="info-label">Entity</span>
             <span className="info-value">{entityName || "—"}</span>
@@ -78,9 +77,9 @@ function Invest() {
             <span className="info-label">Type</span>
             <span className="info-value">{subscriptionType || "—"}</span>
           </div>
-        {/* </div> */}
+        
 
-        {/* Stats Grid */}
+        
         <div className="stats-grid">
           <div className="stat-row">
             <span className="info-label">Price / Unit</span>
@@ -92,7 +91,7 @@ function Invest() {
           </div>
         </div>
 
-        {/* Input Section */}
+        
         <div className="input-group">
           <label className="input-label">Investment Amount (₹)</label>
           <div className="currency-input-wrapper">
@@ -107,7 +106,7 @@ function Invest() {
           </div>
         </div>
 
-        {/* Calculation Box */}
+        
         <div className="calc-box">
           <div className="calc-row">
             <span>Units to Receive:</span>
@@ -119,7 +118,7 @@ function Invest() {
           </div>
         </div>
 
-        {/* Buttons */}
+        
         <div className="button-group">
           <button className="btn-back" onClick={() => navigate(-1)}>
             Cancel

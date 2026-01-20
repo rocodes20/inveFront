@@ -39,12 +39,12 @@ function AddNewOffering() {
         }
 
         const requestBody = {
-            // payload: {
+            
             ...formData,
             offeringSize: Number(formData.offeringSize),
             minimumInvestment: Number(formData.minimumInvestment),
             pricePerUnit: Number(formData.pricePerUnit)
-            // }
+            
         };
 
         try {

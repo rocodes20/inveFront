@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Invitation from '../pages/Invitation'; 
-import AddNewOffering from '../pages/AddNewOffering';// The offering component
-import '../assets/OrganizationPage.css'; // Import the new styles
+import AddNewOffering from '../pages/AddNewOffering';
+import '../assets/OrganizationPage.css'; 
 
 const OrganizationPage = () => {
   const [activeTab, setActiveTab] = useState('invitation');
