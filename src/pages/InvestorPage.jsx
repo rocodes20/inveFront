@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import ViewOffering from '../pages/ViewOfferings'; 
+import ApplyOffering from '../pages/applyOffering';
+import Invest from './Invest'; 
 import '../assets/OrganizationPage.css';
 
 const InvestorPage = () => {
-  const [activeTab, setActiveTab] = useState('viewOffering');
+  const [activeTab, setActiveTab] = useState('ApplyOffering');
 
   return (
     <div className="org-page-container">
@@ -11,8 +12,8 @@ const InvestorPage = () => {
       
       <header className="org-nav-bar">
         <button
-          className={`org-tab-btn ${activeTab === 'viewOffering' ? 'active' : ''}`}
-          onClick={() => setActiveTab('viewOffering')}
+          className={`org-tab-btn ${activeTab === 'ApplyOffering' ? 'active' : ''}`}
+          onClick={() => setActiveTab('ApplyOffering')}
         >
           View Offering
         </button>
@@ -20,8 +21,8 @@ const InvestorPage = () => {
 
       
       <main className="org-content-area">
-        {activeTab === 'ViewOffering' && (
-          <ViewOffering />
+        {activeTab === 'ApplyOffering' && (
+          <ApplyOffering />
         )}
       </main>
       

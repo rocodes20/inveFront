@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchOfferings, fetchProjects } from '../services/api';
-// MAKE SURE THIS MATCHES YOUR FILE NAME CASE (Capital V or lowercase v)
+
 import '../assets/viewOfferings.css'; 
 
 const ViewOfferings = () => {
@@ -63,7 +63,8 @@ const ViewOfferings = () => {
     };
 
     const handleViewInvestors = (offeringId) => {
-        navigate(`/investors/${offeringId}`);
+        navigate(`/organization/offerings/${offeringId}/investors`);
+
     };
 
     return (

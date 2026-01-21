@@ -127,11 +127,11 @@
 
 /* Calculation Result Box */
 .calc-box {
-  background-color: #ecfdf5; /* Light green bg */
-  border: 1px solid #d1fae5;
+  background-color: #edecfd; /* Light green bg */
+  border: 1px solid #d3d1fa;
   border-radius: 8px;
   padding: 16px;
-  color: #065f46;
+  color: #2563eb;
   margin-bottom: 32px;
 }
 
@@ -145,7 +145,7 @@
 .calc-row.total {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid #a7f3d0;
+  border-top: 1px solid #8b8bdf;
   font-weight: 700;
   font-size: 16px;
 }

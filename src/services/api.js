@@ -82,7 +82,7 @@ export async function fetchOfferings() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      action: "view_offers"
+      action: "view_investor_offers"
     })
   });
 

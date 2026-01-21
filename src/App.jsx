@@ -14,7 +14,11 @@ const App = () => {
       <Route path="/organization" element={<OrganizationPage />} />
       <Route path="/invest" element={<Invest />} />
 
-      <Route path="/investors/:id" element={<OfferingInvestors />} />
+      <Route
+  path="/organization/offerings/:offeringId/investors"
+  element={<OfferingInvestors />}
+/>
+
     </Routes>
   );
 };

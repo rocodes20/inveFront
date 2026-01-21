@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Invitation from '../pages/Invitation'; 
 import AddNewOffering from '../pages/AddNewOffering';
 import Projects from '../pages/Projects'; 
-import ViewOfferings from '../pages/ViewOfferings'; // <--- Import
+import ViewOfferings from '../pages/ViewOfferings'; 
 import '../assets/OrganizationPage.css'; 
 
 const OrganizationPage = () => {
