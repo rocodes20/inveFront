@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { fetchProjects, createProject } from '../services/api';
 import '../assets/projects.css';
 
-const Projects = ({ onAddOffering }) => { // <--- Destructure prop here
+const Projects = ({ onAddOffering }) => { 
     const [projects, setProjects] = useState([]);
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -78,7 +78,7 @@ const Projects = ({ onAddOffering }) => { // <--- Destructure prop here
                                 <div className="card-action-footer">
                                     <button 
                                         className="add-offering-btn"
-                                        onClick={() => onAddOffering(proj.project_name)}
+                                        onClick={() => onAddOffering(proj.project_id)}
                                     >
                                          Add Offering
                                     </button>

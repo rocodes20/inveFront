@@ -13,7 +13,7 @@ function isAnyFieldEmpty(data) {
         (value) => value === "" || value === null || value === undefined
     );
 }
-function AddNewOffering({ initialProjectName }) { 
+function AddNewOffering({projectId}) {
     const [formData, setFormData] = useState({
         offeringName: "",
         subscriptionType: "",
@@ -27,15 +27,9 @@ function AddNewOffering({ initialProjectName }) {
     });
 
     const minValue = 0
-    const total = 0
-    useEffect(() => {
-        if (initialProjectName) {
-            setFormData(prev => ({
-                ...prev,
-                offeringName: initialProjectName
-            }));
-        }
-    }, [initialProjectName]);
+
+    
+
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -51,15 +45,25 @@ function AddNewOffering({ initialProjectName }) {
         }
 
         const requestBody = {
+            project_id: projectId,
             
-            ...formData,
+            offeringName: formData.offeringName,
+            subscriptionType: formData.subscriptionType,
+            entityName: formData.entityName,
+            startDate: formData.startDate,
+
             offeringSize: Number(formData.offeringSize),
             minimumInvestment: Number(formData.minimumInvestment),
-            pricePerUnit: Number(formData.pricePerUnit)
-            
+            pricePerUnit: Number(formData.pricePerUnit),
+
+            status: formData.status,
+            visibility: formData.visibility
         };
 
+
         try {
+            console.log("projectId:", projectId, typeof projectId);
+
             const result = await createOffering(requestBody);
             console.log("Success:", result);
         } catch (err) {

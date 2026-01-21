@@ -18,9 +18,10 @@ function Invest() {
       </div>
     );
   }
-
+  const id = sessionStorage.getItem("userId")
   const {
     offeringId,
+    project_id,
     offerName,
     pricePerUnit,
     minimumInvestment,
@@ -42,14 +43,15 @@ function Invest() {
     }
 
     const payload = {
-      contact_id: 3,         // TEMP
-      project_id: 1,         // TEMP
+      contact_id: id,         
+      project_id: project_id,         // TEMP
       offering_id: offeringId,
       amount: Number(amount)
     };
-
+console.log(payload)
     try {
       await investOffer(payload);
+      
       alert("Investment successful!");
       navigate("/investor"); 
     } catch (err) {

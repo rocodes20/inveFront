@@ -42,6 +42,7 @@ function ApplyOffering() {
 
     navigate("/invest", {
       state: {
+        project_id : offer.project_id,
         offeringId: offer.offering_id,
         offeringClassId: offer.offering_class_id,
         offerName: offer.offer_name,

@@ -7,12 +7,15 @@ import '../assets/OrganizationPage.css';
 
 const OrganizationPage = () => {
   const [activeTab, setActiveTab] = useState('invitation');
-  const [selectedProjectForOffering, setSelectedProjectForOffering] = useState('');
+  const [selectedProjectIdForOffering, setSelectedProjectIdForOffering] = useState(null);
 
-  const handleNavigateToOffering = (projectName) => {
-      setSelectedProjectForOffering(projectName); 
-      setActiveTab('offering'); 
-  };
+
+
+  const handleNavigateToOffering = (projectId) => {
+    setSelectedProjectIdForOffering(projectId);
+    setActiveTab('offering');
+};
+
 
   const handleManualAddOffering = () => {
       setSelectedProjectForOffering(''); 
@@ -64,7 +67,8 @@ const OrganizationPage = () => {
         {activeTab === 'view-offerings' && <ViewOfferings />}
 
         {activeTab === 'offering' && (
-            <AddNewOffering initialProjectName={selectedProjectForOffering} />
+            <AddNewOffering projectId={selectedProjectIdForOffering} />
+
         )}
       </div>
       

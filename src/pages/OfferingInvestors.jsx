@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchInvestors } from '../services/api';
-import '../assets/viewOfferings.css'; // Reusing the table styles
+import '../assets/viewOfferings.css'; 
 
 const OfferingInvestors = () => {
-    const { id } = useParams(); // Get offering ID from URL
+    const { id } = useParams(); 
     const navigate = useNavigate();
     const [investors, setInvestors] = useState([]);
     const [loading, setLoading] = useState(true);

@@ -1,41 +1,101 @@
-/* Center the page content */
+/* Page layout */
 .selection-container {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background-color: #ffffff;
-  font-family: sans-serif;
+  align-items: center;
+  background: #f8fafc;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* The Container for the buttons */
+/* Title */
+.selection-container h1 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+/* Subtitle */
+.selection-container p {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 28px;
+}
+
+/* Inputs */
+.selection-container input {
+  width: 320px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+  background-color: #ffffff;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.selection-container input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Error */
+.error-text {
+  width: 320px;
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+/* Button group */
 .button-group {
   display: flex;
-  gap: 30px; /* Space between buttons */
-  margin-top: 20px;
+  gap: 16px;
+  margin-top: 10px;
 }
 
-/* Selectionpage.css */
-
+/* Buttons */
 .card-btn {
-    /* GRADIENT UPDATE */
-    background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
-    color: white;
-    border: none;
-    
-    width: 200px;
-    height: 140px;
-    font-size: 1.2rem;
-    font-weight: 600;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 150px;
+  padding: 14px 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: 0 6px 12px rgba(37, 99, 235, 0.25);
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .card-btn:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
-    filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px rgba(37, 99, 235, 0.35);
+}
+
+.card-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 12px rgba(37, 99, 235, 0.25);
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .selection-container input {
+    width: 90%;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .card-btn {
+    width: 100%;
+  }
 }

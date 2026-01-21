@@ -18,36 +18,33 @@ const ViewOfferings = () => {
     const loadData = async () => {
         setLoading(true);
         try {
-            console.log("Fetching data..."); // DEBUG LOG
+            
 
             const [offersData, projectsData] = await Promise.all([
                 fetchOfferings(),
                 fetchProjects()
             ]);
 
-            console.log("Raw Offers Data:", offersData); // DEBUG LOG
-            console.log("Raw Projects Data:", projectsData); // DEBUG LOG
-
-            // --- PROCESS OFFERINGS ---
+            
             if (offersData && offersData.result) {
                 let data = offersData.result;
-                // Handle case where backend returns { "offers": [...] }
+                
                 if (!Array.isArray(data) && data.offers) {
                     data = data.offers;
                 }
                 
-                console.log("Final Offerings Array:", data); // DEBUG LOG
+                 
                 setOfferings(Array.isArray(data) ? data : []);
             }
 
-            // --- PROCESS PROJECTS ---
+            
             if (projectsData && projectsData.result) {
                 setProjects(projectsData.result);
             }
 
         } catch (error) {
             console.error("CRITICAL ERROR loading data:", error);
-            alert("Error loading data. Check console for details.");
+            alert("Error loading data.");
         } finally {
             setLoading(false);
         }

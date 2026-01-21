@@ -4,7 +4,7 @@ import SelectionPage from './pages/SelectionPage';
 import OrganizationPage from './pages/OrganizationPage'; 
 import InvestorPage from './pages/InvestorPage';
 import Invest from './pages/Invest';
-import OfferingInvestors from './pages/OfferingInvestors'; // <--- Import New Page
+import OfferingInvestors from './pages/OfferingInvestors'; 
 
 const App = () => {
   return (
