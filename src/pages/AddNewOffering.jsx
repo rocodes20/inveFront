@@ -26,7 +26,8 @@ function AddNewOffering({ initialProjectName }) {
         visibility: ""
     });
 
-    // 3. Add this Effect to pre-fill the name
+    const minValue = 0
+    const total = 0
     useEffect(() => {
         if (initialProjectName) {
             setFormData(prev => ({
@@ -144,6 +145,7 @@ function AddNewOffering({ initialProjectName }) {
                             <input
                                 type="number"
                                 name="minimumInvestment"
+                                min={minValue}
                                 placeholder="Enter Minimum Investment"
                                 value={formData.minimumInvestment}
                                 onChange={handleChange}
@@ -156,6 +158,7 @@ function AddNewOffering({ initialProjectName }) {
                                 type="number"
                                 name="pricePerUnit"
                                 placeholder="Enter Price Per Unit"
+                                min={minValue}
                                 value={formData.pricePerUnit}
                                 onChange={handleChange}
                             />
@@ -196,7 +199,7 @@ function AddNewOffering({ initialProjectName }) {
                     <div className="footer-right">
                         <div className="total-box">
                             <span>Total Offering Size</span>
-                            <strong>$0</strong>
+                            <strong>{formData.offeringSize}</strong>
                         </div>
 
                         <button type="submit" className="primary-btn">
