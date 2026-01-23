@@ -16,30 +16,34 @@ async function apiRequest(payload) {
   try {
     const response = await fetch(BASE_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
 
-    const rawData = await response.json();
-
-    if (rawData && rawData.body) {
-      const parsedBody = JSON.parse(rawData.body);
-      
-      if (!parsedBody.success) {
-        throw new Error(parsedBody.message || "Server reported an error");
-      }
-      
-      return parsedBody;
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`HTTP ${response.status}: ${text}`);
     }
 
-    return rawData;
+    const rawData = await response.json();
+
+    let data = rawData;
+
+    if (rawData?.body) {
+      data = JSON.parse(rawData.body);
+    }
+
+    if (data?.success === false) {
+      throw new Error(data.message || "Server reported an error");
+    }
+
+    return data;
   } catch (error) {
     console.error("API Call failed:", error);
     throw error;
   }
 }
+
 
 export async function fetchContacts() {
   return await apiRequest({
