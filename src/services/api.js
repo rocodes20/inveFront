@@ -22,27 +22,35 @@ async function apiRequest(payload) {
 
     if (!response.ok) {
       const text = await response.text();
-      throw new Error(`HTTP ${response.status}: ${text}`);
+      throw new Error(`Server error (${response.status})`);
     }
 
     const rawData = await response.json();
 
     let data = rawData;
-
     if (rawData?.body) {
       data = JSON.parse(rawData.body);
     }
 
     if (data?.success === false) {
-      throw new Error(data.message || "Server reported an error");
+      throw new Error(data.message || "Operation failed");
     }
 
     return data;
   } catch (error) {
     console.error("API Call failed:", error);
-    throw error;
+
+    
+    alert(
+      error.message === "Failed to fetch"
+        ? "Server not working ."
+        : error.message || "Something went wrong"
+    );
+
+    throw error; 
   }
 }
+
 
 
 export async function fetchContacts() {
