@@ -1,27 +1,20 @@
 
-const BASE_URL = "http://127.0.0.1:5000/company";
+const url = "http://127.0.0.1:5000";
+const Company = "/company";
+const Investor = "/investor";
 
-export async function loginUser(email, password, role) {
-  return await apiRequest({
-    action: "login",
-    payload: {
-      email,
-      password,
-      role
-    }
-  });
-}
-
-async function apiRequest(payload) {
+async function apiRequest(endpoint, payload) {
   try {
-    const response = await fetch(BASE_URL, {
+
+    const fullUrl = url + endpoint;
+    
+    const response = await fetch(fullUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      const text = await response.text();
       throw new Error(`Server error (${response.status})`);
     }
 
@@ -39,84 +32,81 @@ async function apiRequest(payload) {
     return data;
   } catch (error) {
     console.error("API Call failed:", error);
-
-    
     alert(
       error.message === "Failed to fetch"
-        ? "Server not working ."
+        ? "Server not working."
         : error.message || "Something went wrong"
     );
-
     throw error; 
   }
 }
 
+//  COMPANY ROUTES 
 
+export async function loginUser(email, password, role) {
+  return await apiRequest(Company, {
+    action: "login",
+    payload: { email, password, role }
+  });
+}
 
 export async function fetchContacts() {
-  return await apiRequest({
+  return await apiRequest(Company, {
     action: "get_all"
   });
 }
 
 export async function bulkCreateContacts(dataList) {
-  return await apiRequest({
+  return await apiRequest(Company, {
     action: "bulk_create",
     dataList: dataList 
   });
 }
 
 export async function createOffering(formData) {
-  return await apiRequest({
+  return await apiRequest(Company, {
     action: "add_offering",
     payload: formData 
   });
 }
 
 export async function fetchRoles() {
-  return await apiRequest({
+  return await apiRequest(Company, {
     action: "populate_roles"
   });
 }
 
 export async function fetchProjects() {
-  return await apiRequest({
+  return await apiRequest(Company, {
     action: "get_projects"
   });
 }
 
 export async function createProject(formData) {
-  return await apiRequest({
+  return await apiRequest(Company, {
     action: "create_project",
     payload: formData
   });
 }
 
 export async function fetchInvestors(offeringId) {
-  return await apiRequest({
+  return await apiRequest(Company, {
     action: "get_offering_investors",
     offering_id: offeringId 
   });
 }
 
 export async function fetchOfferings() {
-  return await apiRequest({
+  return await apiRequest(Company, {
     action: "view_offers"
   });
 }
 
+//  INVESTOR ROUTES
 
 export async function investOffer(payload) {
-  console.log(payload)
-  const response = await fetch("http://127.0.0.1:5000/investor", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      action: "invest_offer",
-      payload
-    })
+  return await apiRequest(Investor, {
+    action: "invest_offer",
+    payload: payload
   });
-
-  const responseData = await response.json();
-  return JSON.parse(responseData.body);
 }
