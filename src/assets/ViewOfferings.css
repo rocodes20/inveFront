@@ -1,139 +1,165 @@
 /* src/assets/viewOfferings.css */
 
-.full-width-card {
+.vo-full-card {
     width: 100%;
     flex: 1;
     display: flex;
     flex-direction: column;
+    background: #fff;       /* Ensure background is white */
+    border-radius: 8px;     /* Optional: nice rounded corners */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Optional: subtle shadow */
 }
 
-.filter-container {
+/* --- HEADER ALIGNMENT (NEW) --- */
+/* This aligns Title to left and Filter to right */
+.vo-header {
+    display: flex;
+    justify-content: space-between; /* Pushes items to edges */
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.vo-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.vo-filter-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     font-size: 0.9rem;
     color: #4b5563;
 }
 
-.filter-select {
-    padding: 6px 12px;
+.vo-filter-select {
+    padding: 8px 12px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
     font-size: 0.9rem;
     outline: none;
     cursor: pointer;
     background-color: #fff;
-    min-width: 150px;
+    min-width: 180px; /* Made slightly wider for long project names */
 }
 
-/* --- DIV TABLE STYLES --- */
+/* --- TABLE LAYOUT --- */
 
-.div-table {
+.vo-table-container {
     display: flex;
     flex-direction: column;
     width: 100%;
     overflow-x: auto; 
 }
 
-/* UPDATED GRID COLUMNS */
-.div-table-header,
-.div-table-row {
+/* GRID COLUMNS TUNED FOR DATA:
+   Project (1.1fr) | Name (1.1fr) | Type (0.8fr) | Entity (1fr) | Min Inv (1fr) | Status (1.4fr for "Accepting...") | Action (150px)
+*/
+.vo-table-header,
+.vo-table-row {
     display: grid;
     grid-template-columns: 
-        1.2fr  /* Project */
-        1.5fr  /* Offering Name */
-        0.8fr  /* Type */
-        1.2fr  /* Entity */
-        /* Removed Raise */
-        1fr    /* Min Inv */
-        100px  /* Status */
-        140px; /* NEW: Action Button */
+        1fr   /* Project: "Dallas Mine" */
+        1fr   /* Offering Name: "Dallas Mine" */
+        0.8fr   /* Type: "Investment" */
+        1fr     /* Entity: "mangogroup" */
+        1fr     /* Min Inv: "$100,000.00" */
+        1.4fr   /* Status: "Accepting Investments" needs space */
+        150px;  /* Button: Fixed width */
     gap: 15px;
-    padding: 14px 20px;
+    padding: 16px 20px;
     align-items: center;
     border-bottom: 1px solid #f3f4f6;
-    min-width: 900px;
+    min-width: 1000px; /* Ensures table doesn't crush on small screens */
 }
 
-.div-table-header {
+.vo-table-header {
     background-color: #f9fafb;
     font-size: 0.75rem;
     font-weight: 700;
-    color: #8898aa;
+    color: #6b7280;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.05em;
 }
 
-.div-table-row {
+.vo-table-row {
     transition: background-color 0.2s ease;
     font-size: 0.9rem;
-    color: #525f7f;
+    color: #374151;
 }
 
-.div-table-row:hover {
-    background-color: #f8f9fe;
+.vo-table-row:hover {
+    background-color: #f9fafb;
 }
 
-/* Cell Helpers */
-.div-table-cell {
+/* CELL HELPERS */
+.vo-table-cell {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.font-bold {
+.vo-text-bold {
     font-weight: 600;
     color: #111827;
 }
 
-.div-table-empty {
-    padding: 40px;
+.vo-empty-state {
+    padding: 60px;
     text-align: center;
-    color: #8898aa;
+    color: #9ca3af;
     font-style: italic;
 }
 
-/* Badges */
-.badge-type {
+/* BADGES */
+.vo-type-badge {
     background-color: #eff6ff;
     color: #1d4ed8;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
     font-weight: 600;
 }
 
-.status-badge {
-    padding: 4px 10px;
-    border-radius: 20px;
+/* STATUS BADGE - Dynamic Handling */
+.vo-status-badge {
+    padding: 6px 12px;
+    border-radius: 99px;
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    display: inline-block;
-    text-align: center;
-    min-width: 80px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
 }
 
-.status-badge.open { background-color: #d1fae5; color: #065f46; }
-.status-badge.closed { background-color: #fee2e2; color: #991b1b; }
-.status-badge.draft { background-color: #f3f4f6; color: #374151; }
-.status-badge.pending { background-color: #fff7ed; color: #9a3412; }
+/* Specific colors based on your data */
+.vo-status-badge.vo-accepting { background-color: #d1fae5; color: #065f46; } 
+.vo-status-badge.vo-open { background-color: #d1fae5; color: #065f46; }
+.vo-status-badge.vo-closed { background-color: #fee2e2; color: #991b1b; }
+.vo-status-badge.vo-draft { background-color: #f3f4f6; color: #374151; }
+.vo-status-badge.vo-pending { background-color: #fff7ed; color: #9a3412; }
 
-/* NEW BUTTON STYLE */
-.view-investors-btn {
+/* BUTTON */
+.vo-investors-btn {
     background-color: #fff;
     border: 1px solid #d1d5db;
     color: #374151;
-    padding: 6px 12px;
+    padding: 8px 12px;
     border-radius: 6px;
     font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
     width: 100%;
+    text-align: center;
 }
 
-.view-investors-btn:hover {
+.vo-investors-btn:hover {
     background-color: #f3f4f6;
     border-color: #9ca3af;
     color: #111827;

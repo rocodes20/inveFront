@@ -88,18 +88,11 @@ export async function fetchInvestors(offeringId) {
 }
 
 export async function fetchOfferings() {
-  const response = await fetch("http://127.0.0.1:5000/investor", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      action: "view_investor_offers"
-    })
+  return await apiRequest({
+    action: "view_offers"
   });
-
-  const responseData = await response.json();
-
-  return JSON.parse(responseData.body);
 }
+
 
 export async function investOffer(payload) {
   console.log(payload)

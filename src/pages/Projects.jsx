@@ -77,11 +77,19 @@ const Projects = ({ onAddOffering }) => {
                                 {/* Button Container */}
                                 <div className="card-action-footer">
                                     <button 
-                                        className="add-offering-btn"
-                                        onClick={() => onAddOffering(proj.project_id)}
-                                    >
-                                         Add Offering
-                                    </button>
+    className="add-offering-btn"
+    onClick={() => {
+        // DEBUG LOG 1
+        console.log("STEP 1: Button Clicked. ID:", proj.project_id, "Name:", proj.project_name);
+        
+        onAddOffering({
+            projectId: proj.project_id,
+            projectName: proj.project_name
+        });
+    }}
+>
+      Add Offering
+</button>
                                 </div>
                             </div>
                         ))

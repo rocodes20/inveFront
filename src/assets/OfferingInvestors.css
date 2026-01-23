@@ -1,0 +1,118 @@
+/* ===== Page Wrapper ===== */
+.investors-page {
+  padding: 24px;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+/* ===== Card ===== */
+.investors-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* ===== Header ===== */
+.investors-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.investors-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.back-btn {
+  background: #f1f5f9;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background: #e5e7eb;
+}
+
+/* ===== Table ===== */
+.investors-table {
+  width: 100%;
+}
+
+/* Header Row */
+.investors-table-header {
+  display: grid;
+  grid-template-columns: 1.5fr 2.5fr 1.5fr 1.5fr;
+  padding: 12px 24px;
+  background: #f9fafb;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: 0.04em;
+}
+
+/* Data Row */
+.investors-table-row {
+  display: grid;
+  grid-template-columns: 1.5fr 2.0fr 1.5fr 1.5fr;
+  padding: 14px 24px;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.investors-table-row:last-child {
+  border-bottom: none;
+}
+
+/* Cells */
+.cell {
+  font-size: 14px;
+  color: #111827;
+}
+
+.cell-bold {
+  font-weight: 600;
+}
+
+/* Amount */
+.amount {
+  color: #2c6bab;
+  font-weight: 600;
+}
+
+/* ===== Empty / Loading ===== */
+.investors-empty {
+  padding: 32px;
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* Header Row */
+.investors-table-header {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1.5fr 1.5fr 1.2fr;
+  padding: 12px 24px;
+  background: #f9fafb;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: 0.04em;
+}
+
+/* Data Row */
+.investors-table-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1.5fr 1.5fr 1.2fr;
+  padding: 14px 24px;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+}
+

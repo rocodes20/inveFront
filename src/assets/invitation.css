@@ -12,7 +12,7 @@ body {
 }
 
 /* --- Layout Container --- */
-.page-container {
+.invitation-page-container {
     display: flex;
     gap: 20px;
     padding: 40px;
@@ -23,7 +23,7 @@ body {
 }
 
 /* --- Cards --- */
-.card {
+.invitation-card {
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -32,19 +32,37 @@ body {
     flex-direction: column;
 }
 
-.directory-section { flex: 1; transition: flex 0.3s ease; }
-
-.form-section {
-    flex: 1;
-    animation: slideIn 0.3s ease-out;
+/* --- Directory Section Logic --- */
+.invitation-directory-section { 
+    flex: 1; 
+    transition: all 0.3s ease; 
 }
 
-@keyframes slideIn {
+/* State: Full Width (No Form) */
+.invitation-card.invitation-full-width {
+    width: 100%;
+    flex: none;
+}
+
+/* State: Compact Mode (Form Open) */
+.invitation-directory-section.invitation-compact-mode {
+    flex: 1.5; /* Give directory slightly more width than the form */
+}
+
+/* --- Form Section Logic --- */
+.invitation-form-section {
+    flex: 1;
+    min-width: 380px; /* Prevent form from becoming too narrow */
+    max-width: 480px; /* Prevent form from becoming too wide */
+    animation: invitationSlideIn 0.3s ease-out;
+}
+
+@keyframes invitationSlideIn {
     from { opacity: 0; transform: translateX(20px); }
     to { opacity: 1; transform: translateX(0); }
 }
 
-.card-header {
+.invitation-card-header {
     padding: 24px;
     border-bottom: 1px solid #f0f2f5;
     display: flex;
@@ -52,7 +70,7 @@ body {
     align-items: center;
 }
 
-.card-title {
+.invitation-card-title {
     margin: 0;
     font-size: 1.25rem;
     font-weight: 600;
@@ -60,7 +78,7 @@ body {
 }
 
 /* --- Buttons --- */
-.btn {
+.invitation-btn {
     cursor: pointer;
     border: none;
     font-family: inherit;
@@ -74,55 +92,60 @@ body {
     transition: all 0.2s;
 }
 
-
-/* invitation.css */
-
-.btn-primary { 
-    /* GRADIENT UPDATE */
+.invitation-btn-primary { 
     background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
     color: white;
     border: none;
-    
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11); 
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.btn-primary:hover { 
+.invitation-btn-primary:hover { 
     transform: translateY(-2px);
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.15);
     filter: brightness(1.1);
 }
 
-.btn-secondary { background-color: #f4f5f7; color: #525f7f; }
-.btn-secondary:hover { background-color: #e9ecef; }
+.invitation-btn-secondary { background-color: #f4f5f7; color: #525f7f; }
+.invitation-btn-secondary:hover { background-color: #e9ecef; }
 
-.btn-close { background: transparent; color: #8898aa; font-size: 1.2rem; padding: 4px 8px; }
-.btn-close:hover { color: #f5365c; }
+.invitation-btn-close { background: transparent; color: #8898aa; font-size: 1.2rem; padding: 4px 8px; }
+.invitation-btn-close:hover { color: #f5365c; }
 
 /* --- Div-Based Table (CSS Grid) --- */
-.div-table {
+.invitation-table {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
 /* Shared Grid Layout for Header and Rows */
-.div-table-header,
-.div-table-row {
+.invitation-table-header,
+.invitation-table-row {
     display: grid;
-    /* Define column widths here: Name, Email, Phone, Residency, Status */
-    grid-template-columns: 1.5fr 2fr 1.2fr 1.2fr 100px; 
+    /* Default Grid: Name (1.5), Email (2), Type (0.8), Verified (0.7) */
+    grid-template-columns: 1.5fr 2fr 0.8fr 0.7fr; 
     gap: 15px;
     padding: 16px 24px;
     align-items: center;
+    transition: all 0.2s ease;
 }
 
-.div-table-header {
+/* COMPACT MODE: Tighter Padding & Adjusted Columns */
+.invitation-directory-section.invitation-compact-mode .invitation-table-header,
+.invitation-directory-section.invitation-compact-mode .invitation-table-row {
+    padding: 12px 16px;
+    gap: 10px;
+    /* Tighter Grid: Name (1.2), Email (1.5), Type (0.8), Verified (0.6) */
+    grid-template-columns: 1.2fr 1.5fr 0.8fr 0.6fr;
+}
+
+.invitation-table-header {
     background-color: #f6f9fc;
     border-bottom: 1px solid #e9ecef;
 }
 
-.div-table-header .div-table-cell {
+.invitation-table-header .invitation-table-cell {
     color: #8898aa;
     font-size: 0.75rem;
     font-weight: 700;
@@ -130,30 +153,36 @@ body {
     letter-spacing: 0.05em;
 }
 
-.div-table-row {
+.invitation-table-row {
     border-bottom: 1px solid #e9ecef;
     transition: background-color 0.2s;
 }
 
-.div-table-row:hover {
+.invitation-table-row:hover {
     background-color: #fcfcfd;
 }
 
-.div-table-cell {
+.invitation-table-cell {
     font-size: 0.875rem;
     color: #525f7f;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: font-size 0.2s ease;
 }
 
-.col-name {
+/* COMPACT MODE: Smaller Font Size */
+.invitation-directory-section.invitation-compact-mode .invitation-table-cell {
+    font-size: 0.8rem;
+}
+
+.invitation-col-name {
     color: #32325d;
     font-weight: 600;
 }
 
 /* Empty/Loading State */
-.div-table-empty {
+.invitation-table-empty {
     padding: 40px;
     text-align: center;
     color: #8898aa;
@@ -161,23 +190,29 @@ body {
 }
 
 /* --- Status Badges --- */
-.status-badge {
+.invitation-status-badge {
     padding: 4px 10px;
     border-radius: 50px;
     font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
-    color: white;
+    color: rgb(16, 15, 15);
     display: inline-block;
     width: 100%;
     text-align: center;
 }
 
-.status-yes { background-color: #2dce89; }
-.status-no { background-color: #adb5bd; }
+/* COMPACT MODE: Smaller Badges */
+.invitation-directory-section.invitation-compact-mode .invitation-status-badge {
+    padding: 2px 6px;
+    font-size: 0.65rem;
+}
+
+.invitation-status-yes { background-color: #2dce89; color: rgb(16, 15, 15) }
+.invitation-status-no { background-color: #adb5bd; color: rgb(16, 15, 15) }
 
 /* --- Pagination --- */
-.pagination-container {
+.invitation-pagination-container {
     padding: 24px;
     border-top: 1px solid #e9ecef;
     display: flex;
@@ -185,115 +220,111 @@ body {
     align-items: center;
 }
 
-.pagination-controls { display: flex; gap: 8px; }
-.page-btn { background: transparent; border: none; color: #525f7f; cursor: pointer; font-weight: 600; }
-.page-btn:disabled { color: #adb5bd; cursor: default; }
+.invitation-pagination-controls { display: flex; gap: 8px; }
+.invitation-page-btn { background: transparent; border: none; color: #525f7f; cursor: pointer; font-weight: 600; }
+.invitation-page-btn:disabled { color: #adb5bd; cursor: default; }
 
 /* --- Form Styles --- */
-.form-body { padding: 24px; }
+.invitation-form-body { padding: 24px; }
 
-.tabs { display: flex; border-bottom: 2px solid #e9ecef; margin-bottom: 24px; }
-.tab-btn {
+.invitation-tabs { display: flex; border-bottom: 2px solid #e9ecef; margin-bottom: 24px; }
+.invitation-tab-btn {
     background: none; border: none; padding: 12px 20px;
     font-size: 0.9rem; font-weight: 600; color: #8898aa;
     cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px;
 }
-.tab-btn:hover { color: #525f7f; }
-.tab-btn.active { color: #5e72e4; border-bottom-color: #5e72e4; }
+.invitation-tab-btn:hover { color: #525f7f; }
+.invitation-tab-btn.invitation-active { color: #5e72e4; border-bottom-color: #5e72e4; }
 
-.form-grid {
+.invitation-form-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;
 }
 
-.form-group { display: flex; flex-direction: column; }
-.form-label {
+.invitation-form-group { display: flex; flex-direction: column; }
+.invitation-form-label {
     font-size: 0.75rem; font-weight: 700; color: #525f7f;
     margin-bottom: 8px; text-transform: uppercase;
 }
 
-.form-input {
+.invitation-form-input {
     border: 1px solid #dee2e6; border-radius: 6px; padding: 10px 12px;
     font-size: 0.9rem; color: #32325d; width: 100%; transition: border-color 0.2s;
 }
-.form-input:focus { border-color: #5e72e4; outline: none; box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1); }
-.form-input.error { border-color: #f5365c; }
-.error-text { color: #f5365c; font-size: 0.75rem; margin-top: 4px; }
+.invitation-form-input:focus { border-color: #5e72e4; outline: none; box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1); }
+.invitation-form-input.invitation-input-error { border-color: #f5365c; }
+.invitation-error-text { color: #f5365c; font-size: 0.75rem; margin-top: 4px; }
 
-.checkbox-group { display: flex; align-items: center; margin-top: 8px; }
-.checkbox-group input[type="checkbox"] { width: 16px; height: 16px; margin-right: 8px; cursor: pointer; }
+.invitation-checkbox-group { display: flex; align-items: center; margin-top: 8px; }
+.invitation-checkbox-group input[type="checkbox"] { width: 16px; height: 16px; margin-right: 8px; cursor: pointer; }
 
-.section-divider { border-top: 1px solid #e9ecef; margin: 24px 0; padding-top: 24px; }
-.subscription-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.invitation-section-divider { border-top: 1px solid #e9ecef; margin: 24px 0; padding-top: 24px; }
+.invitation-subscription-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
-.form-actions {
+.invitation-form-actions {
     display: flex; justify-content: flex-end; gap: 12px;
     margin-top: 24px; border-top: 1px solid #e9ecef; padding-top: 24px;
 }
 
-.bulk-upload-area {
+.invitation-bulk-upload-area {
     border: 2px dashed #dee2e6; border-radius: 6px; padding: 40px;
     text-align: center; background-color: #f8f9fe;
 }
-.text-muted { color: #8898aa; font-size: 0.85rem; margin-bottom: 20px; }
+.invitation-text-muted { color: #8898aa; font-size: 0.85rem; margin-bottom: 20px; }
 
 /* --- Mobile & Tablet Responsiveness --- */
 @media (max-width: 992px) {
     
     /* 1. Stack the main layout vertically */
-    .page-container {
+    .invitation-page-container {
         flex-direction: column;
         padding: 15px; 
         width: 100%;
         gap: 15px;
     }
 
-    .card {
+    .invitation-card {
         width: 100%;
         margin-bottom: 10px;
+        flex: none; /* Reset flex adjustments in mobile */
+    }
+
+    .invitation-form-section {
+        min-width: unset;
+        max-width: 100%;
     }
 
     /* 2. Stack form inputs (1 column) */
-    .form-grid {
+    .invitation-form-grid {
         grid-template-columns: 1fr;
         gap: 15px;
     }
 
-    .form-group.full-width {
-        grid-column: span 1; 
-    }
-    
-    /* 3. TABLE TRANSFORMATION: Hide Columns logic */
-    
-    /* Reset the min-width so it fits the screen (no scrolling) */
-    .div-table-header,
-    .div-table-row {
-        min-width: 100%;
-        padding: 12px 16px; /* Slightly smaller padding */
-        gap: 10px;
-        
-        /* redefine grid: Name (Flexible), Email (Flexible), Status (Fixed small width) */
-        grid-template-columns: 1fr 1.5fr 70px; 
+    /* Reset Table Grid for Mobile */
+    .invitation-table-header,
+    .invitation-table-row {
+         /* Keep Name/Email readable, squeeze others */
+        grid-template-columns: 1.5fr 1.5fr 0.8fr 0.6fr;
+        padding: 10px;
+        gap: 8px;
     }
 
-    /* Hide Column 3 (Phone) and Column 4 (Residency) */
-    .div-table-header .div-table-cell:nth-child(3),
-    .div-table-row .div-table-cell:nth-child(3),
-    .div-table-header .div-table-cell:nth-child(4),
-    .div-table-row .div-table-cell:nth-child(4) {
-        display: none;
+    .invitation-directory-section.invitation-compact-mode .invitation-table-header,
+    .invitation-directory-section.invitation-compact-mode .invitation-table-row {
+        /* Maintain generic grid in mobile even if "compact" class exists */
+        grid-template-columns: 1.5fr 1.5fr 0.8fr 0.6fr;
     }
-
+    
     /* Adjust Email font size slightly if needed for space */
-    .div-table-row .div-table-cell:nth-child(2) {
+    .invitation-table-row .invitation-table-cell:nth-child(2) {
         font-size: 0.8rem;
     }
     
     /* 4. Animation adjustments */
-    .form-section {
-        animation: slideUp 0.3s ease-out;
+    .invitation-form-section {
+        animation: invitationSlideUp 0.3s ease-out;
     }
 
-    @keyframes slideUp {
+    @keyframes invitationSlideUp {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }

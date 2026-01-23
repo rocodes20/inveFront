@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { fetchContacts, bulkCreateContacts } from '../services/api'; 
-import '../assets/invitation.css'; 
+import { fetchContacts, bulkCreateContacts } from '../services/api';
+import '../assets/invitation.css';
 
 const InvitationPage = () => {
-    
+
     const [contacts, setContacts] = useState([]);
     const [loading, setLoading] = useState(true);
-    
+
     const [showAddForm, setShowAddForm] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
     const [activeTab, setActiveTab] = useState('manual');
+
     
-    // 1. UPDATED STATE: Added defaults for verified and contactType
     const [formData, setFormData] = useState({
         firstName: '', lastName: '', nickName: '', email: '',
         phoneNumber: '', dob: '', address: '', investmentCapacity: '',
-        hearAboutUs: '', 
+        hearAboutUs: '',
         accredited: false,
         emailSubNewsletter: false,
         emailSubInvestments: false,
         verified: false,            // Default: Not Verified
-        contactType: 'Individual'   // Default: Individual
+        contactType: ''   
     });
 
-    const [csvFile, setCsvFile] = useState(null); 
+    const [csvFile, setCsvFile] = useState(null);
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
@@ -35,14 +35,14 @@ const InvitationPage = () => {
         setLoading(true);
         try {
             const data = await fetchContacts();
-            // Handle different API response structures safely
+            console.log(data)
             if (data && data.success && Array.isArray(data.result)) {
                 setContacts(data.result);
-                setCurrentPage(1); 
+                setCurrentPage(1);
             } else if (Array.isArray(data)) {
                 setContacts(data);
             } else {
-                setContacts([]); 
+                setContacts([]);
             }
         } catch (error) {
             console.error("Error loading contacts:", error);
@@ -69,11 +69,10 @@ const InvitationPage = () => {
         let newErrors = {};
         let isValid = true;
 
-        if (!formData.firstName.trim()) { newErrors.firstName = "First name is required"; isValid = false; }
-        if (!formData.lastName.trim()) { newErrors.lastName = "Last name is required"; isValid = false; }
-        if (!formData.email.trim()) { newErrors.email = "Email is required"; isValid = false; }
-        else if (!/\S+@\S+\.\S+/.test(formData.email)) { newErrors.email = "Invalid email"; isValid = false; }
-        
+        if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim()) { alert("Fill all required fields"); isValid = false; }
+
+        else if (!/\S+@\S+\.\S+/.test(formData.email)) { alert("Invalid email"); newErrors.email = "Invalid email"; isValid = false; }
+
         if (formData.investmentCapacity && isNaN(formData.investmentCapacity)) {
             newErrors.investmentCapacity = "Capacity must be a number"; isValid = false;
         }
@@ -81,6 +80,7 @@ const InvitationPage = () => {
         setErrors(newErrors);
         return isValid;
     };
+
 
     const handleInputChange = (e) => {
         const { id, value, type, checked } = e.target;
@@ -93,10 +93,10 @@ const InvitationPage = () => {
 
     const handleManualSubmit = async (e) => {
         e.preventDefault();
-        if (!validateForm()) return; 
+        if (!validateForm()) return;
 
         // 2. UPDATED PAYLOAD: Map the new fields for the backend
-        const dataItem = { 
+        const dataItem = {
             firstName: formData.firstName,
             lastName: formData.lastName,
             nickName: formData.nickName,
@@ -109,8 +109,8 @@ const InvitationPage = () => {
             accredited: formData.accredited ? 1 : 0,
             emailSubNewsletter: formData.emailSubNewsletter ? 1 : 0,
             emailSubInvestments: formData.emailSubInvestments ? 1 : 0,
+
             
-            // New Fields Mapped Here
             verified: formData.verified ? 1 : 0,
             contactType: formData.contactType
         };
@@ -161,7 +161,7 @@ const InvitationPage = () => {
         const headers = lines[0].split(",").map(h => h.trim().replace(/[\r\n]+/g, ''));
 
         for (let i = 1; i < lines.length; i++) {
-            if (!lines[i].trim()) continue; 
+            if (!lines[i].trim()) continue;
             const obj = {};
             const currentline = lines[i].split(",");
             for (let j = 0; j < headers.length; j++) {
@@ -183,15 +183,15 @@ const InvitationPage = () => {
         if (result && (result.success || result.message?.includes("Processed"))) {
             alert("Contacts Added Successfully!");
             // Reset form (including new defaults)
-            setFormData({ 
-                firstName: '', lastName: '', nickName: '', email: '', 
-                phoneNumber: '', dob: '', address: '', investmentCapacity: '', 
-                hearAboutUs: '', accredited: false, emailSubNewsletter: false, 
-                emailSubInvestments: false, verified: false, contactType: 'Individual'
+            setFormData({
+                firstName: '', lastName: '', nickName: '', email: '',
+                phoneNumber: '', dob: '', address: '', investmentCapacity: '',
+                hearAboutUs: '', accredited: false, emailSubNewsletter: false,
+                emailSubInvestments: false, verified: false, contactType: ''
             });
             setCsvFile(null);
             setErrors({});
-            loadContactData(); 
+            loadContactData();
             setShowAddForm(false);
         } else {
             alert("Error: " + (result.message || "Unknown error"));
@@ -200,12 +200,12 @@ const InvitationPage = () => {
 
     const downloadSampleCSV = () => {
         const headers = [
-            "firstName", "lastName", "email", "phoneNumber", "nickName", "dob", 
-            "address", "investmentCapacity", "hearAboutUs", "accredited", 
+            "firstName", "lastName", "email", "phoneNumber", "nickName", "dob",
+            "address", "investmentCapacity", "hearAboutUs", "accredited",
             "emailSubNewsletter", "emailSubInvestments", "contactType", "verified"
         ];
         const sampleRow = [
-            "John", "Doe", "john@example.com", "1234567890", "Johnny", "1/1/1990", 
+            "John", "Doe", "john@example.com", "1234567890", "Johnny", "1/1/1990",
             "New York", "50000", "LinkedIn", "1", "1", "0", "Individual", "1"
         ];
         const csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + sampleRow.join(",");
@@ -219,45 +219,44 @@ const InvitationPage = () => {
     };
 
     return (
-        <div className="page-container">
+        <div className="invitation-page-container">
             {/* Left Column: Directory Table */}
-            <div className="card directory-section">
-                <div className="card-header">
-                    <h3 className="card-title">Contact Directory</h3>
+           <div className={`invitation-card invitation-directory-section ${!showAddForm ? 'invitation-full-width' : ''}`}>
+                <div className="invitation-card-header">
+                    <h3 className="invitation-card-title">Contact Directory</h3>
                     {!showAddForm && (
-                        <button className="btn btn-primary" onClick={() => setShowAddForm(true)}>
+                        <button className="invitation-btn invitation-btn-primary" onClick={() => setShowAddForm(true)}>
                             Add Contact
                         </button>
                     )}
                 </div>
 
-                <div className="div-table">
-                    <div className="div-table-header">
-                        <div className="div-table-cell">NAME</div>
-                        <div className="div-table-cell">EMAIL</div>
-                        <div className="div-table-cell">PHONE</div>
-                        <div className="div-table-cell">RESIDENCY</div>
-                        <div className="div-table-cell">VERIFIED</div> 
+                <div className="invitation-table">
+                    {/* Header Row - Updated Columns */}
+                    <div className="invitation-table-header">
+                        <div className="invitation-table-cell">NAME</div>
+                        <div className="invitation-table-cell">EMAIL</div>
+                        <div className="invitation-table-cell">TYPE</div>
+                        <div className="invitation-table-cell">VERIFIED</div>
                     </div>
 
                     {loading ? (
-                        <div className="div-table-empty">Loading data...</div>
+                        <div className="invitation-table-empty">Loading data...</div>
                     ) : contacts.length === 0 ? (
-                        <div className="div-table-empty">No contacts found.</div>
+                        <div className="invitation-table-empty">No contacts found.</div>
                     ) : (
                         currentContacts.map((contact, index) => (
-                            <div className="div-table-row" key={index}>
-                                <div className="div-table-cell col-name">
+                            <div className="invitation-table-row" key={index}>
+                                <div className="invitation-table-cell invitation-col-name">
                                     {contact.firstName} {contact.lastName}
                                 </div>
-                                <div className="div-table-cell">{contact.email}</div>
-                                <div className="div-table-cell">{contact.phoneNumber || '-'}</div>
-                                <div className="div-table-cell">{contact.address || '-'}</div>
-                                <div className="div-table-cell">
+                                <div className="invitation-table-cell">{contact.email}</div>
+                                <div className="invitation-table-cell">{contact.contactType }</div>
+                                <div className="invitation-table-cell">
                                     {contact.verified ? (
-                                        <span className="status-badge status-yes">Yes</span>
+                                        <span className="invitation-status-badge invitation-status-yes">Yes</span>
                                     ) : (
-                                        <span className="status-badge status-no">No</span>
+                                        <span className="invitation-status-badge invitation-status-no">No</span>
                                     )}
                                 </div>
                             </div>
@@ -267,14 +266,28 @@ const InvitationPage = () => {
 
                 {/* Pagination Footer */}
                 {contacts.length > 0 && (
-                    <div className="pagination-container">
-                        <span style={{fontSize: '0.85rem', color: '#8898aa'}}>
+                    <div className="invitation-pagination-container">
+                        <span style={{ fontSize: '0.85rem', color: '#8898aa' }}>
                             Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, contacts.length)} of {contacts.length} entries
                         </span>
-                        <div className="pagination-controls">
-                            <button className="page-btn" onClick={paginatePrev} disabled={currentPage === 1}>&lt; Prev</button>
-                            <span style={{fontSize: '0.85rem', color: '#8898aa'}}>Page {currentPage}</span>
-                            <button className="page-btn" onClick={paginateNext} disabled={currentPage === totalPages}>Next &gt;</button>
+                        <div className="invitation-pagination-controls">
+
+                            {currentPage > 1 && (
+                                <button className="invitation-page-btn" onClick={paginatePrev}>
+                                    &lt; Prev
+                                </button>
+                            )}
+
+                            <span style={{ fontSize: '0.85rem', color: '#8898aa' }}>
+                                Page {currentPage}
+                            </span>
+
+
+                            {currentPage < totalPages && (
+                                <button className="invitation-page-btn" onClick={paginateNext}>
+                                    Next &gt;
+                                </button>
+                            )}
                         </div>
                     </div>
                 )}
@@ -282,51 +295,49 @@ const InvitationPage = () => {
 
             {/* Right Column: Add Contact Form */}
             {showAddForm && (
-                <div className="card form-section">
-                    <div className="card-header">
-                        <h5 className="card-title">Add New Contact</h5>
-                        <button className="btn btn-close" onClick={() => setShowAddForm(false)}>×</button>
+                <div className="invitation-card invitation-form-section">
+                    <div className="invitation-card-header">
+                        <h5 className="invitation-card-title">Add New Contact</h5>
+                        <button className="invitation-btn invitation-btn-close" onClick={() => setShowAddForm(false)}>×</button>
                     </div>
-                    
-                    <div className="form-body">
-                        <div className="tabs">
-                            <button className={`tab-btn ${activeTab === 'manual' ? 'active' : ''}`} onClick={() => setActiveTab('manual')}>Manual Entry</button>
-                            <button className={`tab-btn ${activeTab === 'bulk' ? 'active' : ''}`} onClick={() => setActiveTab('bulk')}>Bulk CSV Upload</button>
+
+                    <div className="invitation-form-body">
+                        <div className="invitation-tabs">
+                            <button className={`invitation-tab-btn ${activeTab === 'manual' ? 'invitation-active' : ''}`} onClick={() => setActiveTab('manual')}>Manual Entry</button>
+                            <button className={`invitation-tab-btn ${activeTab === 'bulk' ? 'invitation-active' : ''}`} onClick={() => setActiveTab('bulk')}>Bulk CSV Upload</button>
                         </div>
 
                         {activeTab === 'manual' && (
                             <form onSubmit={handleManualSubmit} noValidate>
-                                <div className="form-grid">
+                                <div className="invitation-form-grid">
                                     {/* Standard Fields */}
-                                    <div className="form-group">
-                                        <label className="form-label">First Name *</label>
-                                        <input type="text" id="firstName" className={`form-input ${errors.firstName ? 'error' : ''}`} value={formData.firstName} onChange={handleInputChange} />
-                                        {errors.firstName && <div className="error-text">{errors.firstName}</div>}
+                                    <div className="invitation-form-group">
+                                        <label className="invitation-form-label">First Name *</label>
+                                        <input type="text" id="firstName" className={`invitation-form-input ${errors.firstName ? 'invitation-input-error' : ''}`} value={formData.firstName} onChange={handleInputChange} />
+                                        {errors.firstName && <div className="invitation-error-text">{errors.firstName}</div>}
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Last Name *</label>
-                                        <input type="text" id="lastName" className={`form-input ${errors.lastName ? 'error' : ''}`} value={formData.lastName} onChange={handleInputChange} />
-                                        {errors.lastName && <div className="error-text">{errors.lastName}</div>}
+                                    <div className="invitation-form-group">
+                                        <label className="invitation-form-label">Last Name *</label>
+                                        <input type="text" id="lastName" className={`invitation-form-input ${errors.lastName ? 'invitation-input-error' : ''}`} value={formData.lastName} onChange={handleInputChange} />
+                                        {errors.lastName && <div className="invitation-error-text">{errors.lastName}</div>}
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Email *</label>
-                                        <input type="email" id="email" className={`form-input ${errors.email ? 'error' : ''}`} value={formData.email} onChange={handleInputChange} />
-                                        {errors.email && <div className="error-text">{errors.email}</div>}
+                                    <div className="invitation-form-group">
+                                        <label className="invitation-form-label">Email *</label>
+                                        <input type="email" id="email" className={`invitation-form-input ${errors.email ? 'invitation-input-error' : ''}`} value={formData.email} onChange={handleInputChange} />
+                                        {errors.email && <div className="invitation-error-text">{errors.email}</div>}
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Phone</label>
-                                        <input type="tel" id="phoneNumber" className="form-input" value={formData.phoneNumber} onChange={handleInputChange} />
+                                    <div className="invitation-form-group">
+                                        <label className="invitation-form-label">Phone</label>
+                                        <input type="tel" id="phoneNumber" className="invitation-form-input" value={formData.phoneNumber} onChange={handleInputChange} />
                                     </div>
 
-                                    {/* 3. NEW INPUTS START HERE */}
-                                    
                                     {/* Contact Type Dropdown */}
-                                    <div className="form-group">
-                                        <label className="form-label">Contact Type</label>
-                                        <select 
-                                            id="contactType" 
-                                            className="form-input" 
-                                            value={formData.contactType} 
+                                    <div className="invitation-form-group">
+                                        <label className="invitation-form-label">Contact Type</label>
+                                        <select
+                                            id="contactType"
+                                            className="invitation-form-input"
+                                            value={formData.contactType}
                                             onChange={handleInputChange}
                                         >
                                             <option value="Individual">Individual</option>
@@ -335,75 +346,75 @@ const InvitationPage = () => {
                                     </div>
 
                                     {/* Verified Checkbox */}
-                                    <div className="form-group" style={{justifyContent: 'flex-end'}}>
-                                        <div className="checkbox-group">
-                                            <input 
-                                                type="checkbox" 
-                                                id="verified" 
-                                                checked={formData.verified} 
-                                                onChange={handleInputChange} 
+                                    <div className="invitation-form-group" style={{ justifyContent: 'flex-end' }}>
+                                        <div className="invitation-checkbox-group">
+                                            <input
+                                                type="checkbox"
+                                                id="verified"
+                                                checked={formData.verified}
+                                                onChange={handleInputChange}
                                             />
-                                            <label className="form-label" style={{margin:0, cursor:'pointer'}} htmlFor="verified">
+                                            <label className="invitation-form-label" style={{ margin: 0, cursor: 'pointer' }} htmlFor="verified">
                                                 Verified Contact?
                                             </label>
                                         </div>
                                     </div>
                                     {/* NEW INPUTS END */}
 
-                                    <div className="form-group">
-                                        <label className="form-label">Nickname</label>
-                                        <input type="text" id="nickName" className="form-input" value={formData.nickName} onChange={handleInputChange} />
+                                    <div className="invitation-form-group">
+                                        <label className="invitation-form-label">Nickname</label>
+                                        <input type="text" id="nickName" className="invitation-form-input" value={formData.nickName} onChange={handleInputChange} />
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Date of Birth</label>
-                                        <input type="date" id="dob" className="form-input" value={formData.dob} onChange={handleInputChange} />
+                                    <div className="invitation-form-group">
+                                        <label className="invitation-form-label">Date of Birth</label>
+                                        <input type="date" id="dob" className="invitation-form-input" value={formData.dob} onChange={handleInputChange} />
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Residency</label>
-                                        <input type="text" id="address" className="form-input" value={formData.address} onChange={handleInputChange} />
+                                    <div className="invitation-form-group">
+                                        <label className="invitation-form-label">Residency</label>
+                                        <input type="text" id="address" className="invitation-form-input" value={formData.address} onChange={handleInputChange} />
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Capacity</label>
-                                        <input type="number" id="investmentCapacity" className="form-input" value={formData.investmentCapacity} onChange={handleInputChange} />
+                                    <div className="invitation-form-group">
+                                        <label className="invitation-form-label">Capacity</label>
+                                        <input type="number" id="investmentCapacity" className="invitation-form-input" value={formData.investmentCapacity} onChange={handleInputChange} />
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">How did you hear about us?</label>
-                                        <input type="text" id="hearAboutUs" className="form-input" value={formData.hearAboutUs} onChange={handleInputChange} />
+                                    <div className="invitation-form-group">
+                                        <label className="invitation-form-label">How did you hear about us?</label>
+                                        <input type="text" id="hearAboutUs" className="invitation-form-input" value={formData.hearAboutUs} onChange={handleInputChange} />
                                     </div>
-                                    <div className="form-group" style={{justifyContent: 'flex-end'}}>
-                                        <div className="checkbox-group">
+                                    <div className="invitation-form-group" style={{ justifyContent: 'flex-end' }}>
+                                        <div className="invitation-checkbox-group">
                                             <input type="checkbox" id="accredited" checked={formData.accredited} onChange={handleInputChange} />
-                                            <label className="form-label" style={{margin:0, cursor:'pointer'}} htmlFor="accredited">Is Accredited Investor?</label>
+                                            <label className="invitation-form-label" style={{ margin: 0, cursor: 'pointer' }} htmlFor="accredited">Is Accredited Investor?</label>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="section-divider"></div>
-                                <h6 className="form-label" style={{color: '#8898aa'}}>Email Subscriptions</h6>
-                                <div className="subscription-grid">
-                                    <div className="checkbox-group">
+                                <div className="invitation-section-divider"></div>
+                                <h6 className="invitation-form-label" style={{ color: '#8898aa' }}>Email Subscriptions</h6>
+                                <div className="invitation-subscription-grid">
+                                    <div className="invitation-checkbox-group">
                                         <input type="checkbox" id="emailSubNewsletter" checked={formData.emailSubNewsletter} onChange={handleInputChange} />
-                                        <label style={{fontSize:'0.9rem', fontWeight:600}} htmlFor="emailSubNewsletter">Newsletter/Updates</label>
+                                        <label style={{ fontSize: '0.9rem', fontWeight: 600 }} htmlFor="emailSubNewsletter">Newsletter/Updates</label>
                                     </div>
-                                    <div className="checkbox-group">
+                                    <div className="invitation-checkbox-group">
                                         <input type="checkbox" id="emailSubInvestments" checked={formData.emailSubInvestments} onChange={handleInputChange} />
-                                        <label style={{fontSize:'0.9rem', fontWeight:600}} htmlFor="emailSubInvestments">Investment Announcements</label>
+                                        <label style={{ fontSize: '0.9rem', fontWeight: 600 }} htmlFor="emailSubInvestments">Investment Announcements</label>
                                     </div>
                                 </div>
 
-                                <div className="form-actions">
-                                    <button type="button" className="btn btn-secondary" onClick={() => setShowAddForm(false)}>Cancel</button>
-                                    <button type="submit" className="btn btn-primary">Save Contact</button>
+                                <div className="invitation-form-actions">
+                                    <button type="button" className="invitation-btn invitation-btn-secondary" onClick={() => setShowAddForm(false)}>Cancel</button>
+                                    <button type="submit" className="invitation-btn invitation-btn-primary">Save Contact</button>
                                 </div>
                             </form>
                         )}
 
                         {activeTab === 'bulk' && (
-                            <div className="bulk-upload-area">
-                                <h6 style={{fontSize:'1rem', margin:'0 0 10px 0'}}>Upload CSV File</h6>
-                                <button type="button" onClick={downloadSampleCSV} className="btn btn-secondary" style={{marginBottom: '20px'}}>Download Sample CSV</button>
-                                <input type="file" className="form-input" style={{marginBottom: '20px'}} accept=".csv" onChange={handleFileChange} />
-                                <button type="button" className="btn btn-primary" onClick={handleBulkSubmit} disabled={!csvFile} style={{width: '100%'}}>Upload Contacts</button>
+                            <div className="invitation-bulk-upload-area">
+                                <h6 style={{ fontSize: '1rem', margin: '0 0 10px 0' }}>Upload CSV File</h6>
+                                <button type="button" onClick={downloadSampleCSV} className="invitation-btn invitation-btn-secondary" style={{ marginBottom: '20px' }}>Download Sample CSV</button>
+                                <input type="file" className="invitation-form-input" style={{ marginBottom: '20px' }} accept=".csv" onChange={handleFileChange} />
+                                <button type="button" className="invitation-btn invitation-btn-primary" onClick={handleBulkSubmit}  style={{ width: '100%' }}>Upload Contacts</button>
                             </div>
                         )}
                     </div>

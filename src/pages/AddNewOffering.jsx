@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { createOffering } from "../services/api";
 import "../assets/AddNewOffering.css";
@@ -8,14 +7,18 @@ import {
     STATUS_OPTIONS,
     VISIBILITY_OPTIONS
 } from "../common/constants";
+
 function isAnyFieldEmpty(data) {
     return Object.values(data).some(
         (value) => value === "" || value === null || value === undefined
     );
 }
-function AddNewOffering({projectId}) {
+
+// 1. Receive props exactly as sent from Projects.js
+function AddNewOffering({ projectId }) {
+    const { projectId: id, projectName } = projectId;
     const [formData, setFormData] = useState({
-        offeringName: "",
+        offeringName: "", 
         subscriptionType: "",
         entityName: "",
         startDate: "",
@@ -26,10 +29,17 @@ function AddNewOffering({projectId}) {
         visibility: ""
     });
 
-    const minValue = 0
+    const minValue = 0;
 
-    
-
+    // 2. This Effect ensures the Name fills automatically
+    useEffect(() => {
+    if (projectName) {
+        setFormData(prev => ({
+            ...prev,
+            offeringName: projectName
+        }));        
+    }
+}, [projectName]);
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -45,54 +55,49 @@ function AddNewOffering({projectId}) {
         }
 
         const requestBody = {
-            project_id: projectId,
-            
-            offeringName: formData.offeringName,
+            project_id: id,
+            offeringName: formData.offeringName, 
             subscriptionType: formData.subscriptionType,
             entityName: formData.entityName,
             startDate: formData.startDate,
-
             offeringSize: Number(formData.offeringSize),
             minimumInvestment: Number(formData.minimumInvestment),
             pricePerUnit: Number(formData.pricePerUnit),
-
             status: formData.status,
             visibility: formData.visibility
         };
 
-
         try {
-            console.log("projectId:", projectId, typeof projectId);
-
             const result = await createOffering(requestBody);
             console.log("Success:", result);
+            alert("Offering Created Successfully!");
         } catch (err) {
             console.error("Error:", err);
+            alert("Failed to create offering.");
         }
     }
+
     return (
         <div className="offering-page">
-
             <div className="offering-header">
                 <h2>Add New Offering</h2>
                 <span className="close-icon"></span>
             </div>
 
             <form onSubmit={handleSubmit}>
-
                 <div className="offering-grid four-column">
                     <div className="field">
                         <label>Offering Name</label>
                         <input
                             name="offeringName"
                             placeholder="Enter Offering Name"
-                            value={formData.offeringName}
+                            // 3. Bind value to STATE (which is filled by useEffect)
+                            value={formData.offeringName} 
                             onChange={handleChange}
                         />
                     </div>
 
                     <div className="field">
-
                         <SelectWithInfo
                             label="Subscription Type"
                             value={formData.subscriptionType}
@@ -101,7 +106,6 @@ function AddNewOffering({projectId}) {
                                 setFormData({ ...formData, subscriptionType: val })
                             }
                         />
-
                     </div>
 
                     <div className="field">
@@ -125,11 +129,9 @@ function AddNewOffering({projectId}) {
                     </div>
                 </div>
 
-
                 <div className="investor-section">
                     <div className="investor-header">
                         <span>Class A</span>
-                        {/* <span className="edit-icon">✎</span> */}
                     </div>
 
                     <div className="offering-grid five-column">
@@ -187,7 +189,6 @@ function AddNewOffering({projectId}) {
                         </div>
                     </div>
                 </div>
-
 
                 <div className="offering-footer">
                     <div className="footer-left">

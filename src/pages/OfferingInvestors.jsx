@@ -1,34 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchInvestors } from '../services/api';
-import '../assets/viewOfferings.css'; 
+import '../assets/OfferingInvestors.css';
 
 const OfferingInvestors = () => {
-    const { id } = useParams(); 
+    const { offeringId } = useParams();
     const navigate = useNavigate();
-    const [investors, setInvestors] = useState([]);
+    const [investments, setInvestments] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if(id) loadInvestors();
-    }, [id]);
+        if (!offeringId) return;
+        loadInvestments();
+    }, [offeringId]);
 
-    const loadInvestors = async () => {
+    const loadInvestments = async () => {
         setLoading(true);
         try {
-            const data = await fetchInvestors(id);
-            if (data && data.result) {
-                setInvestors(data.result);
+            const data = await fetchInvestors(offeringId);
+
+            if (data && Array.isArray(data.result)) {
+                const aggregated = aggregateShares(data.result);
+                setInvestments(aggregated);
+            } else {
+                setInvestments([]);
             }
         } catch (error) {
-            console.error("Error loading investors:", error);
+            console.error('Error loading investments:', error);
+            setInvestments([]);
         } finally {
             setLoading(false);
         }
     };
 
-    const formatMoney = (amount) => {
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+    const aggregateShares = (rows) => {
+        const map = new Map();
+
+        rows.forEach(inv => {
+            const key = inv.email;
+
+            if (!map.has(key)) {
+                map.set(key, {
+                    first_name: inv.first_name,
+                    last_name: inv.last_name,
+                    email: inv.email,
+                    transaction_date: inv.transaction_date,
+                    totalShares: Number(inv.amount)
+                });
+            } else {
+                map.get(key).totalShares += Number(inv.amount);
+            }
+        });
+
+        return Array.from(map.values());
     };
 
     const formatDate = (dateString) => {
@@ -37,39 +61,57 @@ const OfferingInvestors = () => {
     };
 
     return (
-        <div className="page-container">
-            <div className="card full-width-card">
-                <div className="card-header">
-                    <div style={{display:'flex', alignItems:'center', gap:'15px'}}>
-                        <button className="btn-secondary" onClick={() => navigate(-1)}>
-                            &larr; Back
-                        </button>
-                        <h3 className="card-title">Investor List</h3>
-                    </div>
+        <div className="investors-page">
+            <div className="investors-card">
+
+                <div className="investors-header">
+                    <button className="back-btn" onClick={() => navigate(-1)}>
+                        ← Back
+                    </button>
+                    <h3>Investment History</h3>
                 </div>
 
-                <div className="div-table">
-                    <div className="div-table-header" style={{gridTemplateColumns: '1.5fr 2fr 1.5fr 1.5fr'}}>
-                        <div className="div-table-cell">INVESTOR NAME</div>
-                        <div className="div-table-cell">EMAIL</div>
-                        <div className="div-table-cell">DATE INVESTED</div>
-                        <div className="div-table-cell">AMOUNT</div>
+                <div className="investors-table">
+                    <div className="investors-table-header">
+                        <div>INVESTOR NAME</div>
+                        <div>EMAIL</div>
+                        <div>LAST TRANSACTION</div>
+                        <div>TOTAL SHARES</div>
+                        <div>VIEW ALL TRANSACTIONS</div>
                     </div>
 
                     {loading ? (
-                        <div className="div-table-empty">Loading investors...</div>
-                    ) : investors.length === 0 ? (
-                        <div className="div-table-empty">No investors found for this offering.</div>
+                        <div className="investors-empty">Loading investments...</div>
+                    ) : investments.length === 0 ? (
+                        <div className="investors-empty">
+                            No investments found for this offering.
+                        </div>
                     ) : (
-                        investors.map((inv, index) => (
-                            <div className="div-table-row" key={index} style={{gridTemplateColumns: '1.5fr 2fr 1.5fr 1.5fr'}}>
-                                <div className="div-table-cell font-bold">
+                        investments.map((inv, index) => (
+                            <div className="investors-table-row" key={index}>
+                                <div className="cell cell-bold">
                                     {inv.first_name} {inv.last_name}
                                 </div>
-                                <div className="div-table-cell">{inv.email}</div>
-                                <div className="div-table-cell">{formatDate(inv.transaction_date)}</div>
-                                <div className="div-table-cell" style={{color:'#16a34a', fontWeight:'600'}}>
-                                    {formatMoney(inv.amount)}
+
+                                <div className="cell">
+                                    {inv.email}
+                                </div>
+
+                                <div className="cell">
+                                    {formatDate(inv.transaction_date)}
+                                </div>
+
+                                <div className="cell amount">
+                                    {inv.totalShares}
+                                </div>
+
+                                <div className="cell">
+                                    <button
+                                        className="view-btn"
+                                        onClick={() => {}}
+                                    >
+                                        View
+                                    </button>
                                 </div>
                             </div>
                         ))

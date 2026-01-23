@@ -18,7 +18,7 @@ const SelectionPage = () => {
   try {
     // ORG
     if (role === 'organization') {
-      const userId = 1; 
+      const userId = 2; 
       const userRole = 'organization';
 
       sessionStorage.setItem('userId', userId);

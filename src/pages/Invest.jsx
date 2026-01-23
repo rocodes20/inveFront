@@ -18,7 +18,8 @@ function Invest() {
       </div>
     );
   }
-  const id = sessionStorage.getItem("userId")
+  const id = Number(sessionStorage.getItem("contactId"));
+
   const {
     offeringId,
     project_id,
@@ -38,13 +39,13 @@ function Invest() {
 
   async function submitInvestment() {
     if (Number(amount) < minimumInvestment/pricePerUnit) {
-      alert(`Minimum quantity to invest is ${amount}`);
+      alert(`Minimum quantity to invest is ${minimumInvestment}`);
       return;
     }
 
     const payload = {
       contact_id: id,         
-      project_id: project_id,         // TEMP
+      project_id: project_id,        
       offering_id: offeringId,
       amount: Number(amount)
     };
