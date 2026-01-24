@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createOffering } from "../services/api";
+import { useLocation, useNavigate } from "react-router-dom"; 
 import "../assets/AddNewOffering.css";
 import SelectWithInfo from "../common/SelectWithInfo";
 import {
@@ -14,9 +15,14 @@ function isAnyFieldEmpty(data) {
     );
 }
 
-// 1. Receive props exactly as sent from Projects.js
-function AddNewOffering({ projectId }) {
-    const { projectId: id, projectName } = projectId;
+function AddNewOffering() {
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const projectState = location.state?.projectId || {};
+    const { projectId: id, projectName } = projectState;
+
     const [formData, setFormData] = useState({
         offeringName: "", 
         subscriptionType: "",
@@ -31,15 +37,15 @@ function AddNewOffering({ projectId }) {
 
     const minValue = 0;
 
-    // 2. This Effect ensures the Name fills automatically
+    // 3. Pre-fill Offering Name if Project Name exists
     useEffect(() => {
-    if (projectName) {
-        setFormData(prev => ({
-            ...prev,
-            offeringName: projectName
-        }));        
-    }
-}, [projectName]);
+        if (projectName) {
+            setFormData(prev => ({
+                ...prev,
+                offeringName: projectName
+            }));        
+        }
+    }, [projectName]);
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -48,6 +54,12 @@ function AddNewOffering({ projectId }) {
 
     async function handleSubmit(e) {
         e.preventDefault();
+
+        // Safety check if accessed without project
+        if (!id) {
+            alert("No project selected. Please go back to Projects and try again.");
+            return;
+        }
 
         if (isAnyFieldEmpty(formData)) {
             alert("Please fill all fields");
@@ -71,17 +83,48 @@ function AddNewOffering({ projectId }) {
             const result = await createOffering(requestBody);
             console.log("Success:", result);
             alert("Offering Created Successfully!");
+            
+            // Navigate back to offerings list after success
+            navigate('/organization/offerings');
         } catch (err) {
             console.error("Error:", err);
             alert("Failed to create offering.");
         }
     }
 
+    // 4. If accessed directly without ID, show warning or redirect
+    if (!id) {
+        return (
+            <div className="offering-page" style={{textAlign: 'center', padding: '40px'}}>
+                <h3>No Project Selected</h3>
+                <p>Please select a project from the Projects page first.</p>
+                <button 
+                    className="primary-btn" 
+                    onClick={() => navigate('/organization/projects')}
+                >
+                    Go to Projects
+                </button>
+            </div>
+        );
+    }
+
     return (
         <div className="offering-page">
             <div className="offering-header">
-                <h2>Add New Offering</h2>
-                <span className="close-icon"></span>
+                <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
+                    <button 
+                        onClick={() => navigate(-1)} 
+                        className="ghost-btn"
+                        style={{padding: '5px 10px', fontSize: '18px'}}
+                        title="Go Back"
+                    >
+                        ←
+                    </button>
+                    <h2>Add New Offering</h2>
+                </div>
+                
+                {/* Optional: Close icon acts as Cancel/Back */}
+                <span className="close-icon" onClick={() => navigate('/organization/projects')} style={{cursor: 'pointer'}}>×</span>
             </div>
 
             <form onSubmit={handleSubmit}>
@@ -91,7 +134,6 @@ function AddNewOffering({ projectId }) {
                         <input
                             name="offeringName"
                             placeholder="Enter Offering Name"
-                            // 3. Bind value to STATE (which is filled by useEffect)
                             value={formData.offeringName} 
                             onChange={handleChange}
                         />
@@ -208,7 +250,7 @@ function AddNewOffering({ projectId }) {
                         </div>
 
                         <button type="submit" className="primary-btn">
-                            Next
+                            Create Offering
                         </button>
                     </div>
                 </div>

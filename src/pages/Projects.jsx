@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProjects, createProject } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 import '../assets/projects.css';
 
-const Projects = ({ onAddOffering }) => { 
+const Projects = () => { 
     const [projects, setProjects] = useState([]);
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [loading, setLoading] = useState(true);
+    
+    const navigate = useNavigate();
     
     const [formData, setFormData] = useState({
         projectName: '',
@@ -77,19 +80,21 @@ const Projects = ({ onAddOffering }) => {
                                 {/* Button Container */}
                                 <div className="card-action-footer">
                                     <button 
-    className="add-offering-btn"
-    onClick={() => {
-        // DEBUG LOG 1
-        console.log("STEP 1: Button Clicked. ID:", proj.project_id, "Name:", proj.project_name);
-        
-        onAddOffering({
-            projectId: proj.project_id,
-            projectName: proj.project_name
-        });
-    }}
->
-      Add Offering
-</button>
+                                        className="add-offering-btn"
+                                        onClick={() => {
+                                            // Navigate to the Add Offering page and pass the project data in state
+                                            navigate('/organization/offerings/add', { 
+                                                state: { 
+                                                    projectId: { 
+                                                        projectId: proj.project_id, 
+                                                        projectName: proj.project_name 
+                                                    } 
+                                                } 
+                                            });
+                                        }}
+                                    >
+                                        Add Offering
+                                    </button>
                                 </div>
                             </div>
                         ))

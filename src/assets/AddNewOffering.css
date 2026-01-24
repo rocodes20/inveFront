@@ -2,30 +2,36 @@
 .offering-page {
     /* Allow space around the card */
     width: auto;
-    height: auto;
+    /* REMOVE THIS: height: auto; */
+    min-height: 600px; /* Ensure enough height for content */
     margin: 24px; 
     
     /* Card Styling */
     background: #ffffff;
-    border-radius: 16px; /* Rounded Corners */
-    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1); /* Soft Depth Shadow */
-    overflow: hidden; /* Ensures header/footer conform to rounded corners */
+    border-radius: 16px; 
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1); 
+    
+    /* CRITICAL FIX: Change hidden to visible so dropdowns can pop out */
+    overflow: visible; 
     
     font-family: system-ui, -apple-system, sans-serif;
     display: flex;
     flex-direction: column;
 }
 
-/* Ensure header top corners match card */
+/* Ensure the header still looks rounded at the top */
 .offering-header {
     background: #ffffff;
-    padding: 20px 32px; /* Slightly more padding for card look */
+    padding: 20px 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #e5e7eb;
+    
+    /* Re-add rounded corners manually to the header since main container isn't clipping */
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
 }
-
 /* --- Form Grid System --- */
 .offering-grid {
     display: grid;
