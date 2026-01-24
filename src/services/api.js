@@ -11,6 +11,7 @@ async function apiRequest(endpoint, payload) {
     const response = await fetch(fullUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      
       body: JSON.stringify(payload),
     });
 
@@ -44,7 +45,7 @@ async function apiRequest(endpoint, payload) {
 //  COMPANY ROUTES 
 
 export async function loginUser(email, password, role) {
-  return await apiRequest(Company, {
+  return await apiRequest(Investor, {
     action: "login",
     payload: { email, password, role }
   });
@@ -99,7 +100,7 @@ export async function fetchInvestors(offeringId) {
 export async function OrganizationfetchOfferings() {
   return await apiRequest(Company, {
     action: "view_offers",
-    user_id: sessionStorage.getItem("contactId")
+    
   });
 }
 
@@ -115,6 +116,8 @@ export async function investOffer(payload) {
 export async function InvestorfetchOfferings() {
   return await apiRequest(Investor, {
     action: "view_offers",
-    user_id: sessionStorage.getItem("contactId")
+    payload: {
+      user_id: sessionStorage.getItem("contactId")
+    }
   });
 }

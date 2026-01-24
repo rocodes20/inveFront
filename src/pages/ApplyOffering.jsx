@@ -13,9 +13,14 @@ function ApplyOffering() {
   useEffect(() => {
     async function loadOffers() {
       try {
+            console.log(
+  "contactId in sessionStorage:",
+  sessionStorage.getItem("contactId")
+);
         const data = await InvestorfetchOfferings();
 
-        console.log("ApplyOffering raw response:", data);
+    
+
 
         let offersArray = [];
 
