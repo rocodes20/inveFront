@@ -96,9 +96,10 @@ export async function fetchInvestors(offeringId) {
   });
 }
 
-export async function fetchOfferings() {
+export async function OrganizationfetchOfferings() {
   return await apiRequest(Company, {
-    action: "view_offers"
+    action: "view_offers",
+    user_id: sessionStorage.getItem("contactId")
   });
 }
 
@@ -108,5 +109,12 @@ export async function investOffer(payload) {
   return await apiRequest(Investor, {
     action: "invest_offer",
     payload: payload
+  });
+}
+
+export async function InvestorfetchOfferings() {
+  return await apiRequest(Investor, {
+    action: "view_offers",
+    user_id: sessionStorage.getItem("contactId")
   });
 }

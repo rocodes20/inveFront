@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchOfferings, fetchProjects } from '../services/api';
+import { OrganizationfetchOfferings, fetchProjects } from '../services/api';
 import '../assets/viewOfferings.css';
 
 const ViewOfferings = ({ onAddOffering }) => {
@@ -18,7 +18,7 @@ const ViewOfferings = ({ onAddOffering }) => {
     setLoading(true);
     try {
       const [offersData, projectsData] = await Promise.all([
-        fetchOfferings(),
+        OrganizationfetchOfferings(),
         fetchProjects()
       ]);
 

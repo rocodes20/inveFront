@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchOfferings } from "../services/api";
+import { InvestorfetchOfferings } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import "../assets/ApplyOffering.css";
 
@@ -13,7 +13,7 @@ function ApplyOffering() {
   useEffect(() => {
     async function loadOffers() {
       try {
-        const data = await fetchOfferings();
+        const data = await InvestorfetchOfferings();
 
         console.log("ApplyOffering raw response:", data);
 
